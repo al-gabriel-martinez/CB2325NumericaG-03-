@@ -7,7 +7,17 @@ name = "testes_trab"
 version = "0.1.0"
 description = "Descrição breve do seu projeto"
 authors = [
+    { name = "Anizio Silva", email = "al.anizio.junior@impatech.edu.br" }
+    { name = "Cristiane Magarinos", email = "al.cristiane.sampaio@impatech.edu.br" }
+    { name = "Davi Bezerra", email = "al.davi.guimaraes@impatech.edu.br" }
+    { name = "Felipe Lima", email = "al.felipe.sousa@impatech.edu.br" }
     { name = "Felipe Ribeiro", email = "al.felipe.mendonca@impatech.edu.br" }
+    { name = "Gabriel Falcão", email = "al.gabriel.martinez@impatech.edu.br" }
+    { name = "Guilherme Oséias", email = "al.guilherme.silva@impatech.edu.br" }
+    { name = "Heitor Ramos", email = "al.heitor.pereira@impatech.edu.br" }
+    { name = "João Pedro Lima", email = "al.joao.almeida@impatech.edu.br" }
+    { name = "Natália Brandão", email = "al.natalia.sousa@impatech.edu.br" }
+    { name = "Theo Veiga", email = "al.theo.ambrosio@impatech.edu.br" }    
 ]
 readme = "README.md"
 license = { file = "LICENSE" }
