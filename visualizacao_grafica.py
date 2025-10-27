@@ -35,7 +35,7 @@ class VisualizadorRaizes:
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
         
         
-        # Gráfico 1: Função, iterações e intervalo inicial
+        # Gráfico 1: Função, iterações e intervalo
         ax1.plot(x_vals, y_vals, 'b-', linewidth=2, label='f(x)') # Função
         ax1.axhline(y=0, color='k', linestyle='--', alpha=0.5) # Eixo x
         
@@ -49,8 +49,8 @@ class VisualizadorRaizes:
                 ax1.plot([ponto, historico[i+1]], [self.f(ponto), self.f(historico[i+1])], 
                         'r--', alpha=0.5)
                 
-        # Plotar intervalo inicial
-        ax1.axvline(x=min(historico), color='green', linestyle='--', alpha=0.5, label='Intervalo inicial')
+        # Plotar intervalo
+        ax1.axvline(x=min(historico), color='green', linestyle='--', alpha=0.5, label='Intervalo')
         ax1.axvline(x=max(historico), color='green', linestyle='--', alpha=0.5)
         ax1.axvspan(min(historico), max(historico), alpha=0.06, color='green')
         
