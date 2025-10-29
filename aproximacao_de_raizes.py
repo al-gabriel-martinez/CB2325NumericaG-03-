@@ -1,13 +1,13 @@
 """
-Módulo para cálculo de raízes de funções reais. Feito por: Anizio S. C. Júnior
+Módulo para cálculo de raízes de funções reais. Feito por: Anizio S. C. Júnior (aka AnZ)
 
 Este módulo implementa métodos numéricos para encontrar raízes (zeros) de funções reais.
 Implementações: Método da Bisseção e Método de Newton-Raphson.
 
 É interessante notar que para funções com infinitas raizes em um intervalo finito, como 
-a função f(x)=sen(1/x) é possível encontrar somente um zero dos infinitos com o método de 
-bisseção, mas com o método de Newton-Raphson a aproximação é extremamente instável podendo 
-divergir.
+a função f(x)=sen(1/x) no intervalo (0,1] é possível encontrar somente um zero dos infinitos 
+com o método de bisseção, mas com o método de Newton-Raphson a aproximação é extremamente instável 
+podendo divergir.
 """
 
 def bissecao(f, a, b, tol=1e-6, max_iter=100):
@@ -16,8 +16,15 @@ def bissecao(f, a, b, tol=1e-6, max_iter=100):
     
     O método da bisseção é um algoritmo robusto que sempre converge quando
     f(a) e f(b) têm sinais opostos.
+
+    Este método é muito semelhante ao conceito de intervalos encaixantes, repare
+    que quando definimos um intervalo em que buscamos um zero nos vamos encaixando
+    intervalo de metade do tamanho do anterior, entao cada vez mais vamos nos 
+    aproximando do valor do zero da função, apesar de ser mais lento que o método
+    de Newton ele é bem mais preciso e também mais consistente, assim como foi
+    explicito na observação feito antes.
     
-    Parameters
+    Parâmetros
     ----------
     f : callable
         Função da qual se deseja encontrar a raiz.
@@ -30,7 +37,7 @@ def bissecao(f, a, b, tol=1e-6, max_iter=100):
     max_iter : int, optional
         Número máximo de iterações (padrão: 100).
     
-    Returns
+    Retorno
     -------
     float
         Aproximação da raiz da função.
@@ -42,7 +49,7 @@ def bissecao(f, a, b, tol=1e-6, max_iter=100):
     RuntimeError
         Se o método não convergir dentro do número máximo de iterações.
     
-    Examples
+    Exemplos
     --------
     >>> f = lambda x: x**2 - 4
     >>> raiz = bissecao(f, 0, 3)
@@ -89,8 +96,16 @@ def newton_raphson(f, x0, df=None, tol=1e-6, max_iter=100, h=1e-8):
     
     O método de Newton-Raphson converge rapidamente quando próximo da raiz,
     mas requer o cálculo ou aproximação da derivada.
+
+    Esse metodo utiliza de retas tangentes, definimos um ponto x_0 para começarmos
+    e extraimos a reta tangente df(x_0)/dx daquele ponto utilizando de derivadas,
+    após pergarmos a reta tangente desse ponto nos observamos onde ela intersecta
+    o eixo x e pegamos aquele valor intersectado x_1 e fazemos o mesmo processo
+    que fizemos com x_0, perceba que quanto mais iterações fizermos se aproxima,
+    esse método também é mais rápido que o de bisseção, apesar de não ter tanta
+    estabilidade em algumas funções, como o exemplo dado antes, f(x) = sex(1/x).
     
-    Parameters
+    Parâmetros
     ----------
     f : callable
         Função da qual se deseja encontrar a raiz.
@@ -105,7 +120,7 @@ def newton_raphson(f, x0, df=None, tol=1e-6, max_iter=100, h=1e-8):
     h : float, optional
         Passo para aproximação numérica da derivada (padrão: 1e-8).
     
-    Returns
+    Retorno
     -------
     float
         Aproximação da raiz da função.
@@ -217,7 +232,7 @@ def raiz(f, a=None, b=None, x0=None, df=None, tol=1e-6, max_iter=100, method="bi
     
     elif method in ["newton", "raphson", "newton-raphson", "newtonraphson", "new", "n"]:
         if x0 is None:
-            # Se não forneceu x0, tenta usar o ponto médio de [a,b] se disponível
+            # Se não forneceu x_0, tenta usar o ponto médio de [a,b] se disponível
             if a is not None and b is not None:
                 x0 = (a + b) / 2.0
             else:
@@ -268,5 +283,4 @@ if __name__ == "__main__":
     raiz_3 = raiz(f2, x0=1.0, df=df2, method="newton")
     print(f"Raiz (Newton): {raiz_3:.6f}")
     print(f"f({raiz_3:.6f}) = {f2(raiz_3):.2e}")
-    
     """
