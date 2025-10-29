@@ -10,6 +10,156 @@ bisseção, mas com o método de Newton-Raphson a aproximação é extremamente 
 divergir.
 """
 
+def bissecao(f, a, b, tol=1e-6, max_iter=100):
+    """
+    Encontra uma raiz da função f no intervalo [a, b] usando o Método da Bisseção.
+    
+    O método da bisseção é um algoritmo robusto que sempre converge quando
+    f(a) e f(b) têm sinais opostos.
+    
+    Parameters
+    ----------
+    f : callable
+        Função da qual se deseja encontrar a raiz.
+    a : float
+        Limite inferior do intervalo.
+    b : float
+        Limite superior do intervalo.
+    tol : float, optional
+        Tolerância para o critério de parada (padrão: 1e-6).
+    max_iter : int, optional
+        Número máximo de iterações (padrão: 100).
+    
+    Returns
+    -------
+    float
+        Aproximação da raiz da função.
+    
+    Raises
+    ------
+    ValueError
+        Se f(a) e f(b) não têm sinais opostos.
+    RuntimeError
+        Se o método não convergir dentro do número máximo de iterações.
+    
+    Examples
+    --------
+    >>> f = lambda x: x**2 - 4
+    >>> raiz = bissecao(f, 0, 3)
+    >>> print(f"{raiz:.6f}")
+    2.000000
+    """
+    fa = f(a)
+    fb = f(b)
+    
+    # Verifica se há mudança de sinal
+    if fa * fb > 0:
+        raise ValueError(f"A função deve ter sinais opostos em a={a} e b={b}. "
+                        f"f(a)={fa:.6f}, f(b)={fb:.6f}")
+    
+    # Verifica se os extremos já são raízes
+    if abs(fa) < tol:
+        return a
+    if abs(fb) < tol:
+        return b
+    
+    for i in range(max_iter):
+        # Calcula o ponto médio
+        c = (a + b) / 2.0
+        fc = f(c)
+        
+        # Verifica convergência
+        if abs(fc) < tol or (b - a) / 2.0 < tol:
+            return c
+        
+        # Atualiza o intervalo
+        if fa * fc < 0:
+            b = c
+            fb = fc
+        else:
+            a = c
+            fa = fc
+    
+    raise RuntimeError(f"Método da bisseção não convergiu após {max_iter} iterações.")
+
+
+def newton_raphson(f, x0, df=None, tol=1e-6, max_iter=100, h=1e-8):
+    """
+    Encontra uma raiz da função f usando o Método de Newton-Raphson.
+    
+    O método de Newton-Raphson converge rapidamente quando próximo da raiz,
+    mas requer o cálculo ou aproximação da derivada.
+    
+    Parameters
+    ----------
+    f : callable
+        Função da qual se deseja encontrar a raiz.
+    x0 : float
+        Aproximação inicial da raiz.
+    df : callable, optional
+        Derivada da função f. Se não fornecida, será aproximada numericamente.
+    tol : float, optional
+        Tolerância para o critério de parada (padrão: 1e-6).
+    max_iter : int, optional
+        Número máximo de iterações (padrão: 100).
+    h : float, optional
+        Passo para aproximação numérica da derivada (padrão: 1e-8).
+    
+    Returns
+    -------
+    float
+        Aproximação da raiz da função.
+    
+    Raises
+    ------
+    RuntimeError
+        Se o método não convergir ou se a derivada for zero.
+    
+    Examples
+    --------
+    >>> f = lambda x: x**2 - 4
+    >>> df = lambda x: 2*x
+    >>> raiz = newton_raphson(f, 1.0, df)
+    >>> print(f"{raiz:.6f}")
+    2.000000
+    
+    >>> # Sem fornecer a derivada (aproximação numérica)
+    >>> raiz = newton_raphson(f, 1.0)
+    >>> print(f"{raiz:.6f}")
+    2.000000
+    """
+    x = x0
+    
+    for i in range(max_iter):
+        fx = f(x)
+        
+        # Verifica convergência
+        if abs(fx) < tol:
+            return x
+        
+        # Calcula a derivada
+        if df is not None:
+            dfx = df(x)
+        else:
+            # Aproximação numérica da derivada (diferenças finitas)
+            dfx = (f(x + h) - f(x - h)) / (2 * h)
+        
+        # Verifica se a derivada é muito pequena
+        if abs(dfx) < 1e-12:
+            raise RuntimeError(f"Derivada muito próxima de zero na iteração {i}. "
+                             f"x={x:.6f}, f'(x)={dfx:.2e}")
+        
+        # Atualização de Newton
+        x_new = x - fx / dfx
+        
+        # Verifica convergência pela mudança em x
+        if abs(x_new - x) < tol:
+            return x_new
+        
+        x = x_new
+    
+    raise RuntimeError(f"Método de Newton-Raphson não convergiu após {max_iter} iterações.")
+
 def raiz(f, a=None, b=None, x0=None, df=None, tol=1e-6, max_iter=100, method="bissecao"):
     """
     Interface unificada para encontrar raízes de funções.
