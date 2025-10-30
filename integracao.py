@@ -1,6 +1,7 @@
 """Aproximação de integrais por soma de Riemann (utilizando o ponto médio)."""
 
 import math
+import matplotlib.pyplot as plt
 
 def integral(f, a, b, n):
     """Aproxima a integral definida ∫_a^b f(x) dx pela regra do ponto médio.
@@ -22,12 +23,31 @@ def integral(f, a, b, n):
     b = float(b)
     delta_x = (b - a) / n
     soma = 0.0
+    F = [f(a)]
+    X = [a]
+
+    def poligono(ponto, ponto2):
+        x_vertices = [ponto[0],ponto2[0],ponto2[0],ponto[0]]
+        y_vertices = [ponto[1],ponto2[1],0,0]
+        plt.fill(x_vertices, y_vertices, color='skyblue', alpha=0.7)
 
     for i in range(n):
-        x_esq = a + i * delta_x
-        x_dir = x_esq + delta_x
-        x_med = (x_esq + x_dir) / 2.0
-        soma += f(x_med)
+            x_esq = a + i * delta_x
+            x_dir = x_esq + delta_x
+            x_med = (x_esq + x_dir) / 2.0
+            f_xm = f(x_med)
+            F.append(f_xm)
+            X.append(x_med)
+            soma += f_xm
+            poligono((x_esq,f_xm),(x_dir,f_xm))
+    
+    F.append(f(b))
+    X.append(b)
+    plt.plot(X,F)
+    plt.title('Polígono Preenchido com fill()')
+    plt.xlabel('Eixo X')
+    plt.ylabel('Eixo Y')
+    plt.show()
 
     return soma * delta_x
 
