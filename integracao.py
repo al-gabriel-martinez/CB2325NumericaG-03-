@@ -3,7 +3,7 @@
 import math
 import matplotlib.pyplot as plt
 
-def integral(f, a, b, n):
+def integral(f, a, b, n, metodo = "trapezio"):
     """Aproxima a integral definida ∫_a^b f(x) dx pela regra do ponto médio.
 
     A partição é uniforme em n subintervalos de largura delta_x = (b - a) / n.
@@ -31,7 +31,19 @@ def integral(f, a, b, n):
         y_vertices = [ponto[1],ponto2[1],0,0]
         plt.fill(x_vertices, y_vertices, color='skyblue', alpha=0.7)
 
-    for i in range(n):
+    if metodo == 'trapezio':
+        for i in range(n):
+            x_esq = a + i * delta_x
+            x_dir = x_esq + delta_x
+            f_esq = f(x_esq)
+            f_dir = f(x_dir)
+            f_xm = (f_esq+f_dir)/2
+            F.append(f_dir)
+            X.append(x_dir)
+            soma += f_xm
+            poligono((x_esq,f_esq),(x_dir,f_dir))
+    elif metodo == 'ponto medio':
+        for i in range(n):
             x_esq = a + i * delta_x
             x_dir = x_esq + delta_x
             x_med = (x_esq + x_dir) / 2.0
@@ -44,7 +56,8 @@ def integral(f, a, b, n):
     F.append(f(b))
     X.append(b)
     plt.plot(X,F)
-    plt.title('Polígono Preenchido com fill()')
+    plt.title(f'Gráfico')
+    plt.grid()
     plt.xlabel('Eixo X')
     plt.ylabel('Eixo Y')
     plt.show()
