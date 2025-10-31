@@ -1,5 +1,3 @@
-from visualizacao_grafica import visualizar_metodo
-
 """
 Módulo para cálculo de raízes de funções reais. Feito por: Anizio S. C. Júnior (aka AnZ)
 
@@ -256,56 +254,7 @@ def raiz(f, a=None, b=None, x0=None, df=None, tol=1e-6, max_iter=100, method="bi
         raise ValueError(f"Método '{method}' não reconhecido. "
                         f"Use 'bissecao' ou 'newton'.")
 
-# Método de visualização rápida
-def visualizacao_rapida(f, a=0, b=2, method="bissecao", x0=None, df=None, titulo=None):
-    """
-    Visualização rápida e automática de métodos de busca de raízes.
-    
-    Parâmetros
-    ----------
-    f : callable
-        Função para encontrar a raiz
-    a : float, optional
-        Limite inferior do intervalo (padrão: 0)
-    b : float, optional
-        Limite superior do intervalo (padrão: 2)
-    method : str, optional
-        Método: "bissecao" ou "newton" (padrão: "bissecao")
-    x0 : float, optional
-        Ponto inicial para Newton (padrão: ponto médio de [a,b])
-    df : callable, optional
-        Derivada para Newton (se não fornecida, calcula numericamente)
-    titulo : str, optional
-        Título do gráfico (padrão: baseado no método)
-    
-    Retorno
-    -------
-    tuple
-        (raiz, historico) - raiz encontrada e histórico de iterações
-    
-    Exemplos
-    --------
-    >>> # Uso mais simples possível:
-    >>> f = lambda x: x**3 - 9*x + 5
-    >>> raiz, historico = visualizacao_rapida(f)
-    >>> 
-    >>> # Com Newton:
-    >>> raiz, historico = visualizacao_rapida(f, method="newton")
-    >>> 
-    >>> # Com intervalo personalizado:
-    >>> raiz, historico = visualizacao_rapida(f, a=-1, b=3)
-    """
-    # Configurar x0 automático para Newton se não fornecido
-    if method == "newton" and x0 is None:
-        x0 = (a + b) / 2
-    
-    # Calcular raiz com histórico
-    raiz1, historico = raiz(f, a=a, b=b, x0=x0, df=df, method=method, retornar_historico=True)
-    
-    # Visualizar
-    visualizar_metodo(f, historico, a=a-1, b=b+1, titulo=titulo)
-    
-    return raiz1, historico
+
 
 
 # Retirar as aspas para ver os exemplos
@@ -383,24 +332,4 @@ if __name__ == "__main__":
     print(f"Raiz (Newton): {raiz_n:.6f}")
     print(f"Histórico: {[f'{x:.6f}' for x in historico_n]}")
     print(f"Número de iterações: {len(historico_n)}")
-'''
-
-'''
-# Exemplo de uso com visualização
-if __name__ == "__main__":
-    # Teste com histórico
-    f = lambda x: x**3 - 6*x**2 - 8
-    
-    print("=" * 50)
-    print("Teste com visualização")
-    print("=" * 50)
-    
-    # Bisseção com histórico
-    raiz1, historico1 = visualizacao_rapida(f, a=-10, b=10, method="bissecao",titulo="Método de Bisseção")
-    
-    print()
-    
-    # Newton com histórico
-    df = lambda x: 3*x**2 - 12*x
-    raiz2, historico2 = visualizacao_rapida(f, a=-10, b=10, method="newton", x0=1.0, df=df, titulo="Método de Newton")
 '''
