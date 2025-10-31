@@ -94,15 +94,8 @@ def visualizar_metodo(f, historico, **kwargs):
     viz.visualizar(historico, **kwargs)
 
 
-
-
-
-
-
-
-
-
-# TESTES DE EXEMPLO:
+# Retirar as aspas para ver os exemplos
+'''
 def f(x):
     return x**3 - 9*x + 5
 
@@ -119,3 +112,4 @@ visualizar_metodo(f, historico_secante, a=-4, b=5, titulo="Método da Secante")
 historico_newton = [2.0, 1.8333, 1.7381, 1.7001, 1.6905, 1.6899]
 
 visualizar_metodo(f, historico_newton, a=-4, b=5, titulo="Método de Newton")
+'''

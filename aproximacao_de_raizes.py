@@ -1,3 +1,5 @@
+from visualizacao_grafica import visualizar_metodo
+
 """
 Módulo para cálculo de raízes de funções reais. Feito por: Anizio S. C. Júnior (aka AnZ)
 
@@ -10,7 +12,7 @@ com o método de bisseção, mas com o método de Newton-Raphson a aproximação
 podendo divergir.
 """
 
-def bissecao(f, a, b, tol=1e-6, max_iter=100):
+def bissecao(f, a, b, tol=1e-6, max_iter=100, retornar_historico=False):
     """
     Encontra uma raiz da função f no intervalo [a, b] usando o Método da Bisseção.
     
@@ -66,18 +68,21 @@ def bissecao(f, a, b, tol=1e-6, max_iter=100):
     
     # Verifica se os extremos já são raízes
     if abs(fa) < tol:
-        return a
+        return (a, [a]) if retornar_historico else a
     if abs(fb) < tol:
-        return b
+        return (b, [b]) if retornar_historico else b
+    
+    historico = []
     
     for i in range(max_iter):
         # Calcula o ponto médio
         c = (a + b) / 2.0
         fc = f(c)
+        historico.append(c)
         
         # Verifica convergência
         if abs(fc) < tol or (b - a) / 2.0 < tol:
-            return c
+            return (c, historico) if retornar_historico else c
         
         # Atualiza o intervalo
         if fa * fc < 0:
@@ -90,7 +95,7 @@ def bissecao(f, a, b, tol=1e-6, max_iter=100):
     raise RuntimeError(f"Método da bisseção não convergiu após {max_iter} iterações.")
 
 
-def newton_raphson(f, x0, df=None, tol=1e-6, max_iter=100, h=1e-8):
+def newton_raphson(f, x0, df=None, tol=1e-6, max_iter=100, h=1e-8, retornar_historico=False):
     """
     Encontra uma raiz da função f usando o Método de Newton-Raphson.
     
@@ -144,13 +149,14 @@ def newton_raphson(f, x0, df=None, tol=1e-6, max_iter=100, h=1e-8):
     2.000000
     """
     x = x0
+    historico = [x0]
     
     for i in range(max_iter):
         fx = f(x)
         
         # Verifica convergência
         if abs(fx) < tol:
-            return x
+            return (x, historico) if retornar_historico else x
         
         # Calcula a derivada
         if df is not None:
@@ -161,21 +167,27 @@ def newton_raphson(f, x0, df=None, tol=1e-6, max_iter=100, h=1e-8):
         
         # Verifica se a derivada é muito pequena
         if abs(dfx) < 1e-12:
-            raise RuntimeError(f"Derivada muito próxima de zero na iteração {i}. "
+            if retornar_historico:
+                raise RuntimeError(f"Derivada zero. Último x: {x:.6f}, histórico: {historico}")
+            else:
+                raise RuntimeError(f"Derivada muito próxima de zero na iteração {i}. "
                              f"x={x:.6f}, f'(x)={dfx:.2e}")
         
         # Atualização de Newton
         x_new = x - fx / dfx
+        historico.append(x_new)
         
         # Verifica convergência pela mudança em x
         if abs(x_new - x) < tol:
-            return x_new
+            return (x_new, historico) if retornar_historico else x_new
         
         x = x_new
-    
-    raise RuntimeError(f"Método de Newton-Raphson não convergiu após {max_iter} iterações.")
+    if retornar_historico:
+        raise RuntimeError(f"Método não convergiu após {max_iter} iterações. Último x: {x:.6f}, histórico: {historico}")
+    else:
+        raise RuntimeError(f"Método de Newton-Raphson não convergiu após {max_iter} iterações.")
 
-def raiz(f, a=None, b=None, x0=None, df=None, tol=1e-6, max_iter=100, method="bissecao"):
+def raiz(f, a=None, b=None, x0=None, df=None, tol=1e-6, max_iter=100, method="bissecao", retornar_historico=False):
     """
     Interface unificada para encontrar raízes de funções.
     
@@ -228,7 +240,7 @@ def raiz(f, a=None, b=None, x0=None, df=None, tol=1e-6, max_iter=100, method="bi
     if method in ["bissecao", "bisseção", "bisseccao", "bissecção", "bissec", "bisec", "bi", "b"]:
         if a is None or b is None:
             raise ValueError("O método da bisseção requer os parâmetros 'a' e 'b'.")
-        return bissecao(f, a, b, tol, max_iter)
+        return bissecao(f, a, b, tol, max_iter, retornar_historico=retornar_historico)
     
     elif method in ["newton", "raphson", "newton-raphson", "newtonraphson", "new", "n"]:
         if x0 is None:
@@ -238,15 +250,67 @@ def raiz(f, a=None, b=None, x0=None, df=None, tol=1e-6, max_iter=100, method="bi
             else:
                 raise ValueError("O método de Newton-Raphson requer o parâmetro 'x0' "
                                "ou os parâmetros 'a' e 'b' para estimativa inicial.")
-        return newton_raphson(f, x0, df, tol, max_iter)
+        return newton_raphson(f, x0, df, tol, max_iter, retornar_historico=retornar_historico)
     
     else:
         raise ValueError(f"Método '{method}' não reconhecido. "
                         f"Use 'bissecao' ou 'newton'.")
 
-# Retirar aspas caso queira ver os exemplos
+# Método de visualização rápida
+def visualizacao_rapida(f, a=0, b=2, method="bissecao", x0=None, df=None, titulo=None):
+    """
+    Visualização rápida e automática de métodos de busca de raízes.
+    
+    Parâmetros
+    ----------
+    f : callable
+        Função para encontrar a raiz
+    a : float, optional
+        Limite inferior do intervalo (padrão: 0)
+    b : float, optional
+        Limite superior do intervalo (padrão: 2)
+    method : str, optional
+        Método: "bissecao" ou "newton" (padrão: "bissecao")
+    x0 : float, optional
+        Ponto inicial para Newton (padrão: ponto médio de [a,b])
+    df : callable, optional
+        Derivada para Newton (se não fornecida, calcula numericamente)
+    titulo : str, optional
+        Título do gráfico (padrão: baseado no método)
+    
+    Retorno
+    -------
+    tuple
+        (raiz, historico) - raiz encontrada e histórico de iterações
+    
+    Exemplos
+    --------
+    >>> # Uso mais simples possível:
+    >>> f = lambda x: x**3 - 9*x + 5
+    >>> raiz, historico = visualizacao_rapida(f)
+    >>> 
+    >>> # Com Newton:
+    >>> raiz, historico = visualizacao_rapida(f, method="newton")
+    >>> 
+    >>> # Com intervalo personalizado:
+    >>> raiz, historico = visualizacao_rapida(f, a=-1, b=3)
+    """
+    # Configurar x0 automático para Newton se não fornecido
+    if method == "newton" and x0 is None:
+        x0 = (a + b) / 2
+    
+    # Calcular raiz com histórico
+    raiz1, historico = raiz(f, a=a, b=b, x0=x0, df=df, method=method, retornar_historico=True)
+    
+    # Visualizar
+    visualizar_metodo(f, historico, a=a-1, b=b+1, titulo=titulo)
+    
+    return raiz1, historico
+
+
+# Retirar as aspas para ver os exemplos
 """
-# Exemplo de uso
+# Exemplo de uso sem histórico
 if __name__ == "__main__":
     # Teste 1: Função do exemplo do documento
     f = lambda x: x**3 - 9*x + 5
@@ -283,4 +347,60 @@ if __name__ == "__main__":
     raiz_3 = raiz(f2, x0=1.0, df=df2, method="newton")
     print(f"Raiz (Newton): {raiz_3:.6f}")
     print(f"f({raiz_3:.6f}) = {f2(raiz_3):.2e}")
-    """
+"""
+
+'''
+# Exemplo de uso com histórico
+if __name__ == "__main__":
+    # Teste com histórico
+    f = lambda x: x**3 - 9*x + 5
+    
+    print("=" * 50)
+    print("Teste com histórico")
+    print("=" * 50)
+    
+    # Bisseção com histórico
+    resultado_b = raiz(f, a=0, b=2, method="bissecao", retornar_historico=True)
+    if isinstance(resultado_b, tuple):
+        raiz_b, historico_b = resultado_b
+    else:
+        raiz_b, historico_b = resultado_b, [resultado_b]
+    
+    print(f"Raiz (bisseção): {raiz_b:.6f}")
+    print(f"Histórico: {[f'{x:.6f}' for x in historico_b]}")
+    print(f"Número de iterações: {len(historico_b)}")
+    
+    print()
+    
+    # Newton com histórico
+    df = lambda x: 3*x**2 - 9
+    resultado_n = raiz(f, x0=1.0, df=df, method="newton", retornar_historico=True)
+    if isinstance(resultado_n, tuple):
+        raiz_n, historico_n = resultado_n
+    else:
+        raiz_n, historico_n = resultado_n, [resultado_n]
+    
+    print(f"Raiz (Newton): {raiz_n:.6f}")
+    print(f"Histórico: {[f'{x:.6f}' for x in historico_n]}")
+    print(f"Número de iterações: {len(historico_n)}")
+'''
+
+'''
+# Exemplo de uso com visualização
+if __name__ == "__main__":
+    # Teste com histórico
+    f = lambda x: x**3 - 6*x**2 - 8
+    
+    print("=" * 50)
+    print("Teste com visualização")
+    print("=" * 50)
+    
+    # Bisseção com histórico
+    raiz1, historico1 = visualizacao_rapida(f, a=-10, b=10, method="bissecao",titulo="Método de Bisseção")
+    
+    print()
+    
+    # Newton com histórico
+    df = lambda x: 3*x**2 - 12*x
+    raiz2, historico2 = visualizacao_rapida(f, a=-10, b=10, method="newton", x0=1.0, df=df, titulo="Método de Newton")
+'''
