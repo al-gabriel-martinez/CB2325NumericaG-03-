@@ -9,7 +9,7 @@ def linear_interp(X_coord: list, Y_coord: list):
   '''
 
   '''Ordenando as coordenadas dos pontos.'''
-  pontos = [(X_coord[i],Y_coord[i]) for i in range(len(X))]
+  pontos = [(X_coord[i],Y_coord[i]) for i in range(len(X_coord))]
   pontos.sort()
 
   def f(t, xi=0, xf=1, n=100, title=""):
@@ -24,7 +24,7 @@ def linear_interp(X_coord: list, Y_coord: list):
 
     if t=="graf":
       '''Intervalo do eixo X no gráfico.'''
-      x = [x / n for x in range(n*xi//1 -1, n*xf//1 + 1)]
+      x = [x / n for x in range(int(n*xi) -1, int(n*xf) + 1)]
       y = [f(x) for x in x]
 
       plt.plot(x, y)
