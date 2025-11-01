@@ -40,9 +40,9 @@ def integral(f, a, b, n, metodo = "trapezio"):
             f_xm = (f_esq+f_dir)/2
             F.append(f_dir)
             X.append(x_dir)
-            soma += f_xm
+            soma += f_xm * delta_x
             poligono((x_esq,f_esq),(x_dir,f_dir))
-    elif metodo == 'ponto medio':
+    elif metodo == 'ponto_medio':
         for i in range(n):
             x_esq = a + i * delta_x
             x_dir = x_esq + delta_x
@@ -50,7 +50,7 @@ def integral(f, a, b, n, metodo = "trapezio"):
             f_xm = f(x_med)
             F.append(f_xm)
             X.append(x_med)
-            soma += f_xm
+            soma += f_xm * delta_x
             poligono((x_esq,f_xm),(x_dir,f_xm))
     
     F.append(f(b))
@@ -62,8 +62,7 @@ def integral(f, a, b, n, metodo = "trapezio"):
     plt.ylabel('Eixo Y')
     plt.show()
 
-    return soma * delta_x
-
+    return soma 
 
 if __name__ == "__main__":
     
@@ -74,3 +73,8 @@ if __name__ == "__main__":
     print(area1)  
     area2 = integral(g, 0, math.pi, 100)
     print(area2)   
+
+    area3 = integral(f, 0, 1, 4, 'ponto_medio')
+    print(area3)  
+    area4 = integral(g, 0, math.pi, 100, 'ponto_medio')
+    print(area4)   
