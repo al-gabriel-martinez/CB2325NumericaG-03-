@@ -110,6 +110,7 @@ def hermite_interp(x: list, deriv: list):
     
     return H
 
+
 """
 if __name__ == "__main__":
     pass
