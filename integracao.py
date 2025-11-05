@@ -1,31 +1,48 @@
-"""Aproximação de integrais por soma de Riemann (utilizando o ponto médio)."""
+"""Métodos numéricos de integração: trapézio, ponto médio e Simpson, com visualização."""
 
 import math
 import matplotlib.pyplot as plt
 import numpy as np
-import matplotlib.pyplot as plt
 
 def poligono4(ponto, ponto2, *, cor='skyblue', alpha=0.7):
+    """Preencha um quadrilátero com base em y=0 entre duas abscissas.
+
+    Desenha um polígono de 4 lados cuja base está em y=0, com vértices
+    x = ponto[0] e x = ponto2[0], e topos em y = ponto[1] e y = ponto2[1].
+
+    Parâmetros:
+      ponto: Tupla (x_esq, y_esq).
+      ponto2: Tupla (x_dir, y_dir).
+      cor: Cor do preenchimento.
+      alpha: Opacidade do preenchimento.
+    """
     x_vertices = [ponto[0], ponto2[0], ponto2[0], ponto[0]]
     y_vertices = [ponto[1], ponto2[1], 0,        0       ]
     plt.fill(x_vertices, y_vertices, color=cor, alpha=alpha)
 
 
 def integral(f, a, b, n, plotar = True,metodo = "trapezio",suavidade = 500,cor_grafico = '#1f77b4',opacidade_grafico = 1,cor_area = 'skyblue',opacidade_area = 0.7,grade =True):
-    """Aproxima a integral definida ∫_a^b f(x) dx pela regra do ponto médio.
+    """Aproxime ∫_a^b f(x) dx por trapézio, ponto_medio ou simpson.
 
-    A partição é uniforme em n subintervalos de largura delta_x = (b - a) / n.
-    Em cada subintervalo [x_esq, x_dir], avalia-se a função no ponto médio
-    x_med = (x_esq + x_dir) / 2.
+    A partição é uniforme: delta_x = (b - a) / n. Para 'plotar=True',
+    a função é amostrada com 'suavidade' pontos por unidade de comprimento.
 
     Parâmetros:
-        f (callable): função escalar f(x) avaliável em float.
-        a (float): extremidade esquerda do intervalo.
-        b (float): extremidade direita do intervalo.
-        n (int): número de subintervalos (inteiro positivo).
+      f: Função escalar (f(x) -> float).
+      a: Extremo esquerdo do intervalo.
+      b: Extremo direito do intervalo.
+      n: Número de subintervalos.
+      plotar: Se True, desenha função e áreas aproximadas.
+      metodo: 'trapezio', 'ponto_medio' ou 'simpson'.
+      suavidade: Densidade de pontos p/ desenhar a curva (plot).
+      cor_grafico: Cor da curva f(x).
+      opacidade_grafico: Opacidade da curva f(x).
+      cor_area: Cor do preenchimento das áreas.
+      opacidade_area: Opacidade do preenchimento das áreas.
+      grade: Se True, exibe grade no gráfico.
 
     Retorna:
-        float: aproximação numérica de ∫_a^b f(x) dx.
+      float: Aproximação numérica de ∫_a^b f(x) dx.
     """
     a = float(a)
     b = float(b)
@@ -106,17 +123,17 @@ if __name__ == "__main__":
     f = lambda x: x**2
     g = lambda x: math.sin(x)
   
-    area1 = integral(g, 0, 1, 4,metodo='simpson',cor_area="purple",grade=False,opacidade_area=0.3)
+    area1 = integral(f, 0, 1, 4, plotar = False)
     print("função f com metodo do trapezio", area1)  
-    area2 = integral(g, 0, math.pi, 100,plotar=False)
+    area2 = integral(g, 0, math.pi, 100, cor_grafico= 'black')
     print("função g com metodo do trapezio", area2)  
 
-    area3 = integral(f, 0, 1, 4, 'ponto_medio')
+    area3 = integral(f, 0, 1, 4, metodo = 'ponto_medio', cor_area='purple')
     print("função f com metodo do ponto medio", area3)  
-    area4 = integral(g, 0, math.pi, 100, 'ponto_medio')
+    area4 = integral(g, 0, math.pi, 100, metodo = 'ponto_medio')
     print("função g com metodo do ponto medio", area4)  
 
-    area5 = integral(f, 0, 1, 4, 'simpson',cor_grafico='black',cor_area='red',opacidade_area=0.3)
+    area5 = integral(f, 0, 1, 4, metodo ='simpson',opacidade_grafico=0.7, grade = False)
     print("função f com metodo do simpson", area5)  
-    area6 = integral(g, 0, math.pi, 100)
+    area6 = integral(g, 0, math.pi, 100, metodo='simpson', opacidade_area=1)
     print("função g com metodo do simpson", area6)  
