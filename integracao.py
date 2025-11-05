@@ -28,7 +28,6 @@ def integral(f, a, b, n, plotar = True,metodo = "trapezio",suavidade = 500,cor_g
     F = []
     X = []
 
-    
     tamanho_intervalo = abs(b-a)
     n_pontos_f = math.floor(tamanho_intervalo*suavidade)
     delta_x_funçao = (b-a)/n_pontos_f
@@ -54,7 +53,8 @@ def integral(f, a, b, n, plotar = True,metodo = "trapezio",suavidade = 500,cor_g
             f_dir = f(x_dir)
             f_xm = (f_esq+f_dir)/2
             soma += f_xm * delta_x
-            poligono4((x_esq,f_esq),(x_dir,f_dir))
+            if plotar:
+                poligono4((x_esq,f_esq),(x_dir,f_dir))
     elif metodo == 'ponto_medio':
         for i in range(n):
             x_esq = a + i * delta_x
@@ -62,7 +62,8 @@ def integral(f, a, b, n, plotar = True,metodo = "trapezio",suavidade = 500,cor_g
             x_med = (x_esq + x_dir) / 2.0
             f_xm = f(x_med)
             soma += ( f(x_esq) + f_xm*4 + f(x_dir))/6 * delta_x
-            poligono4((x_esq,f_xm),(x_dir,f_xm))
+            if plotar:
+                poligono4((x_esq,f_xm),(x_dir,f_xm))
 
     elif metodo == 'simpson':
         for i in range(n):
@@ -74,17 +75,18 @@ def integral(f, a, b, n, plotar = True,metodo = "trapezio",suavidade = 500,cor_g
             f_dir = f(x_dir)
             f_xm = f(x_med)
             
-            x_pontos = np.array([x_esq,x_med,x_dir])
-            y_pontos = np.array([f_esq,f_xm,f_dir])
+            if plotar:
+                x_pontos = np.array([x_esq,x_med,x_dir])
+                y_pontos = np.array([f_esq,f_xm,f_dir])
 
-            a_p,b_p,c_p = np.polyfit(x_pontos,y_pontos,2)
-            g = lambda t: a_p*t**2+b_p*t+c_p 
-            n_pontos_g = math.floor(delta_x*suavidade)
+                a_p,b_p,c_p = np.polyfit(x_pontos,y_pontos,2)
+                g = lambda t: a_p*t**2+b_p*t+c_p 
+                n_pontos_g = math.floor(delta_x*suavidade)
 
-            X_G = np.linspace(x_esq, x_dir, n_pontos_g)
-            G = g(X_G)
+                X_G = np.linspace(x_esq, x_dir, n_pontos_g)
+                G = g(X_G)
 
-            plt.fill_between(X_G, G, color=cor_area, alpha=0.5)
+                plt.fill_between(X_G, G, color=cor_area, alpha=opacidade_area)
 
             soma += (f_esq + 4.0*f_xm + f_dir) * (delta_x / 6.0)
          
@@ -105,17 +107,17 @@ if __name__ == "__main__":
     f = lambda x: x**2
     g = lambda x: math.sin(x)
   
-    """area1 = integral(f, 0, 1, 4)
+    area1 = integral(g, 0, 1, 4,metodo='simpson',cor_area="purple",grade=False,opacidade_area=0.3)
     print("função f com metodo do trapezio", area1)  
-    area2 = integral(g, 0, math.pi, 100)
+    area2 = integral(g, 0, math.pi, 100,plotar=False)
     print("função g com metodo do trapezio", area2)  
 
     area3 = integral(f, 0, 1, 4, 'ponto_medio')
     print("função f com metodo do ponto medio", area3)  
     area4 = integral(g, 0, math.pi, 100, 'ponto_medio')
-    print("função g com metodo do ponto medio", area4)  """  
+    print("função g com metodo do ponto medio", area4)  
 
     area5 = integral(f, 0, 1, 4, 'simpson',cor_grafico='black',cor_area='red',opacidade_area=0.3)
     print("função f com metodo do simpson", area5)  
-    area6 = integral(g, 0, math.pi, 100, 'simpson',plotar=False)
-    print("função g com metodo do simpson", area6)    
+    area6 = integral(g, 0, math.pi, 100)
+    print("função g com metodo do simpson", area6)  
