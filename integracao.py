@@ -4,7 +4,7 @@ import math
 import matplotlib.pyplot as plt
 import numpy as np
 
-def integral(f, a, b, n, plotar = True,metodo = "trapezio",suavidade = 500,cor_grafico = '#1f77b4',opacidade_grafico = 1,cor_area = 'skyblue',opacidade_area = 0.7,grade ='True'):
+def integral(f, a, b, n, plotar = True,metodo = "trapezio",suavidade = 500,cor_grafico = '#1f77b4',opacidade_grafico = 1,cor_area = 'skyblue',opacidade_area = 0.7,grade =True):
     """Aproxima a integral definida ∫_a^b f(x) dx pela regra do ponto médio.
 
     A partição é uniforme em n subintervalos de largura delta_x = (b - a) / n.
@@ -61,7 +61,7 @@ def integral(f, a, b, n, plotar = True,metodo = "trapezio",suavidade = 500,cor_g
             x_dir = x_esq + delta_x
             x_med = (x_esq + x_dir) / 2.0
             f_xm = f(x_med)
-            soma += ( f(x_esq) + f_xm*4 + f(x_dir))/6 * delta_x
+            soma += f_xm * delta_x
             if plotar:
                 poligono4((x_esq,f_xm),(x_dir,f_xm))
 
