@@ -27,6 +27,8 @@ def integral(f, a, b, n, metodo = "trapezio"):
 
     F = []
     X = []
+
+    
     tamanho_intervalo = abs(b-a)
     n_pontos_f = math.floor(tamanho_intervalo*500)
     delta_x_funçao = (b-a)/n_pontos_f
@@ -72,6 +74,18 @@ def integral(f, a, b, n, metodo = "trapezio"):
             f_dir = f(x_dir)
             f_xm = f(x_med)
             
+            x_pontos = np.array([x_esq,x_med,x_dir])
+            y_pontos = np.array([f_esq,f_xm,f_dir])
+
+            a_p,b_p,c_p = np.polyfit(x_pontos,y_pontos,2)
+            g = lambda t: a_p*t**2+b_p*t+c_p 
+            n_pontos_g = math.floor(delta_x*500)
+
+            X_G = np.linspace(x_esq, x_dir, n_pontos_g)
+            G = g(X_G)
+
+            plt.fill_between(X_G, G, color='skyblue', alpha=0.5)
+
 
 
             soma += (f_esq + 4.0*f_xm + f_dir) * (delta_x / 6.0)
@@ -92,7 +106,7 @@ if __name__ == "__main__":
     f = lambda x: x**2
     g = lambda x: math.sin(x)
   
-    area1 = integral(f, 0, 1, 4)
+    """area1 = integral(f, 0, 1, 4)
     print("função f com metodo do trapezio", area1)  
     area2 = integral(g, 0, math.pi, 100)
     print("função g com metodo do trapezio", area2)  
@@ -100,7 +114,7 @@ if __name__ == "__main__":
     area3 = integral(f, 0, 1, 4, 'ponto_medio')
     print("função f com metodo do ponto medio", area3)  
     area4 = integral(g, 0, math.pi, 100, 'ponto_medio')
-    print("função g com metodo do ponto medio", area4)    
+    print("função g com metodo do ponto medio", area4)  """  
 
     area5 = integral(f, 0, 1, 4, 'simpson')
     print("função f com metodo do simpson", area5)  
