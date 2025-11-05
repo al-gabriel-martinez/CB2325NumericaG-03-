@@ -3,6 +3,13 @@
 import math
 import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.pyplot as plt
+
+def poligono4(ponto, ponto2, *, cor='skyblue', alpha=0.7):
+    x_vertices = [ponto[0], ponto2[0], ponto2[0], ponto[0]]
+    y_vertices = [ponto[1], ponto2[1], 0,        0       ]
+    plt.fill(x_vertices, y_vertices, color=cor, alpha=alpha)
+
 
 def integral(f, a, b, n, plotar = True,metodo = "trapezio",suavidade = 500,cor_grafico = '#1f77b4',opacidade_grafico = 1,cor_area = 'skyblue',opacidade_area = 0.7,grade =True):
     """Aproxima a integral definida ∫_a^b f(x) dx pela regra do ponto médio.
@@ -37,14 +44,6 @@ def integral(f, a, b, n, plotar = True,metodo = "trapezio",suavidade = 500,cor_g
         X.append(x_i)
         F.append(f(x_i))
 
-    
-
-    #polígonos de 4 lados
-    def poligono4(ponto, ponto2):
-        x_vertices = [ponto[0],ponto2[0],ponto2[0],ponto[0]]
-        y_vertices = [ponto[1],ponto2[1],0,0]                                                                                       
-        plt.fill(x_vertices, y_vertices, color=cor_area, alpha=opacidade_area)
-
     if metodo == 'trapezio':
         for i in range(n):
             x_esq = a + i * delta_x
@@ -54,7 +53,7 @@ def integral(f, a, b, n, plotar = True,metodo = "trapezio",suavidade = 500,cor_g
             f_xm = (f_esq+f_dir)/2
             soma += f_xm * delta_x
             if plotar:
-                poligono4((x_esq,f_esq),(x_dir,f_dir))
+                poligono4((x_esq, f_esq), (x_dir, f_dir),cor=cor_area, alpha=opacidade_area)
     elif metodo == 'ponto_medio':
         for i in range(n):
             x_esq = a + i * delta_x
@@ -63,7 +62,7 @@ def integral(f, a, b, n, plotar = True,metodo = "trapezio",suavidade = 500,cor_g
             f_xm = f(x_med)
             soma += f_xm * delta_x
             if plotar:
-                poligono4((x_esq,f_xm),(x_dir,f_xm))
+                poligono4((x_esq, f_xm), (x_dir, f_xm),cor=cor_area, alpha=opacidade_area)
 
     elif metodo == 'simpson':
         for i in range(n):
