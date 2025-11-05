@@ -4,7 +4,7 @@ import math
 import matplotlib.pyplot as plt
 import numpy as np
 
-def integral(f, a, b, n, metodo = "trapezio"):
+def integral(f, a, b, n, plotar = True,metodo = "trapezio",suavidade = 500,cor_grafico = '#1f77b4',opacidade_grafico = 1,cor_area = 'skyblue',opacidade_area = 0.7,grade ='True'):
     """Aproxima a integral definida ∫_a^b f(x) dx pela regra do ponto médio.
 
     A partição é uniforme em n subintervalos de largura delta_x = (b - a) / n.
@@ -30,7 +30,7 @@ def integral(f, a, b, n, metodo = "trapezio"):
 
     
     tamanho_intervalo = abs(b-a)
-    n_pontos_f = math.floor(tamanho_intervalo*500)
+    n_pontos_f = math.floor(tamanho_intervalo*suavidade)
     delta_x_funçao = (b-a)/n_pontos_f
 
     for i in range(n_pontos_f+1):
@@ -44,7 +44,7 @@ def integral(f, a, b, n, metodo = "trapezio"):
     def poligono4(ponto, ponto2):
         x_vertices = [ponto[0],ponto2[0],ponto2[0],ponto[0]]
         y_vertices = [ponto[1],ponto2[1],0,0]                                                                                       
-        plt.fill(x_vertices, y_vertices, color='skyblue', alpha=0.7)
+        plt.fill(x_vertices, y_vertices, color=cor_area, alpha=opacidade_area)
 
     if metodo == 'trapezio':
         for i in range(n):
@@ -79,25 +79,24 @@ def integral(f, a, b, n, metodo = "trapezio"):
 
             a_p,b_p,c_p = np.polyfit(x_pontos,y_pontos,2)
             g = lambda t: a_p*t**2+b_p*t+c_p 
-            n_pontos_g = math.floor(delta_x*500)
+            n_pontos_g = math.floor(delta_x*suavidade)
 
             X_G = np.linspace(x_esq, x_dir, n_pontos_g)
             G = g(X_G)
 
-            plt.fill_between(X_G, G, color='skyblue', alpha=0.5)
-
-
+            plt.fill_between(X_G, G, color=cor_area, alpha=0.5)
 
             soma += (f_esq + 4.0*f_xm + f_dir) * (delta_x / 6.0)
          
             
-    
-    plt.plot(X,F)
-    plt.title(f'Gráfico')
-    plt.grid()
-    plt.xlabel('Eixo X')
-    plt.ylabel('Eixo Y')
-    plt.show()
+    if plotar:
+        plt.plot(X,F,color = cor_grafico,alpha=opacidade_grafico)
+        plt.title(f'Gráfico da função')
+        if grade:
+            plt.grid()
+        plt.xlabel('Eixo X')
+        plt.ylabel('Eixo Y')
+        plt.show()
 
     return soma 
 
@@ -116,7 +115,7 @@ if __name__ == "__main__":
     area4 = integral(g, 0, math.pi, 100, 'ponto_medio')
     print("função g com metodo do ponto medio", area4)  """  
 
-    area5 = integral(f, 0, 1, 4, 'simpson')
+    area5 = integral(f, 0, 1, 4, 'simpson',cor_grafico='black',cor_area='red',opacidade_area=0.3)
     print("função f com metodo do simpson", area5)  
-    area6 = integral(g, 0, math.pi, 100, 'simpson')
+    area6 = integral(g, 0, math.pi, 100, 'simpson',plotar=False)
     print("função g com metodo do simpson", area6)    
