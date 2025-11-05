@@ -2,6 +2,7 @@
 
 import math
 import matplotlib.pyplot as plt
+import numpy as np
 
 def integral(f, a, b, n, metodo = "trapezio"):
     """Aproxima a integral definida ∫_a^b f(x) dx pela regra do ponto médio.
@@ -23,8 +24,19 @@ def integral(f, a, b, n, metodo = "trapezio"):
     b = float(b)
     delta_x = (b - a) / n
     soma = 0.0
-    F = [f(a)]
-    X = [a]
+
+    F = []
+    X = []
+    tamanho_intervalo = abs(b-a)
+    n_pontos_f = math.floor(tamanho_intervalo*500)
+    delta_x_funçao = (b-a)/n_pontos_f
+
+    for i in range(n_pontos_f+1):
+        x_i = a+i*delta_x_funçao
+        X.append(x_i)
+        F.append(f(x_i))
+
+    
 
     #polígonos de 4 lados
     def poligono4(ponto, ponto2):
@@ -39,8 +51,6 @@ def integral(f, a, b, n, metodo = "trapezio"):
             f_esq = f(x_esq)
             f_dir = f(x_dir)
             f_xm = (f_esq+f_dir)/2
-            F.append(f_dir)
-            X.append(x_dir)
             soma += f_xm * delta_x
             poligono4((x_esq,f_esq),(x_dir,f_dir))
     elif metodo == 'ponto_medio':
@@ -49,8 +59,6 @@ def integral(f, a, b, n, metodo = "trapezio"):
             x_dir = x_esq + delta_x
             x_med = (x_esq + x_dir) / 2.0
             f_xm = f(x_med)
-            F.append(f_xm)
-            X.append(x_med)
             soma += ( f(x_esq) + f_xm*4 + f(x_dir))/6 * delta_x
             poligono4((x_esq,f_xm),(x_dir,f_xm))
 
@@ -63,13 +71,13 @@ def integral(f, a, b, n, metodo = "trapezio"):
             f_esq = f(x_esq)
             f_dir = f(x_dir)
             f_xm = f(x_med)
+            
+
 
             soma += (f_esq + 4.0*f_xm + f_dir) * (delta_x / 6.0)
          
             
     
-    F.append(f(b))
-    X.append(b)
     plt.plot(X,F)
     plt.title(f'Gráfico')
     plt.grid()
