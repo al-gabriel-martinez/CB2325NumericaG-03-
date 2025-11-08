@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 
-def hermite_interp(x: list, deriv: list, plot=True):
+def hermite_interp(x: list, deriv: list, plot=True, title=""):
     """
     Cria e faz o plot do polinômio interpolador de Hermite.
 
@@ -23,7 +23,10 @@ def hermite_interp(x: list, deriv: list, plot=True):
     plot : bool, optional (default=True)
         Se True, exibe um gráfico do polinômio interpolador junto aos pontos.
         Caso False, apenas retorna a função interpoladora.
-    
+
+    title : str, optional (default='')
+        Título do gráfico.
+        
     Retorno
     -------
     H : callable
@@ -113,8 +116,8 @@ def hermite_interp(x: list, deriv: list, plot=True):
 
         plt.figure(figsize=(7,5))
         plt.plot(x_plot, y_plot, label="Polinômio de Hermite", color='blue')
-        plt.scatter(x, [d[0] for d in deriv], color='red', zorder=5, label="Pontos")
-        plt.title("Interpolação de Hermite")
+        plt.scatter(x, [d[0] for d in deriv], color='blue', zorder=5, label="Pontos")
+        plt.title(title)
         plt.xlabel("Eixo X")
         plt.ylabel("Eixo Y")
         plt.grid(True)
