@@ -50,7 +50,7 @@ def erro_relativo(valor,aprox, casas_decimais_de_precisao = 7):
     if (not isinstance(valor,int) and not isinstance(valor,float)) or (not isinstance(aprox,int) and not isinstance(aprox,float)):
         return("valor e/ou valor aproximado não está com tipo válido( inteiro ou float)")
     resposta = abs(valor-aprox)/abs(valor)
-    if  isinstance(casas_decimais_de_precisao,int) and 0 <= casas_decimais_de_precisao < 15:
+    if  isinstance(casas_decimais_de_precisao,int) and 0 <= casas_decimais_de_precisao < 16:
         return(round(resposta,casas_decimais_de_precisao))
     elif not isinstance(casas_decimais_de_precisao,int) and not isinstance(casas_decimais_de_precisao,float):
         return (round(resposta,7))
