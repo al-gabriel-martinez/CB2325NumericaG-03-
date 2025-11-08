@@ -10,7 +10,7 @@ Detalhes:
 - O padrão é arredondar os erros para 7 casas decimais.
 - Se o número de casas decimais informado for inválido (negativo, float ou >= 16),
   será usado o valor inteiro mais próximo no intervalo [0, 15].
-- Se o valor de quantidade de casas decimais passada não for um inteiro, nem um float ,
+- Se o valor de quantidade de casas decimais passada não for um inteiro, nem um float,
   como uma string, será arredondado automaticamente para 7 casas decimais
 - Verifica se os valores passados para "valor" e "aprox" são inteiros ou floats; caso contrário, retorna uma mensagem de erro.
 - O epsilon da máquina é definido como o menor número que, somado a 1, produz um resultado diferente de 1.
@@ -61,10 +61,12 @@ def erro_relativo(valor, aprox, casas_decimais=7):
     """    
     if (not isinstance(valor, int) and not isinstance(valor, float)) or (not isinstance(aprox, int) and not isinstance(aprox, float)):
         return("valor e/ou valor aproximado não está com tipo válido( inteiro ou float)")
+    if valor == 0:
+        raise ZeroDivisionError("Erro relativo não definido: Valor real é zero.")
     resposta = abs(valor - aprox)/abs(valor)
     if  isinstance(casas_decimais, int) and 0 <= casas_decimais < 16:
         return(round(resposta,casas_decimais))
-    elif not isinstance(casas_decimais,int) and not isinstance(casas_decimais, float):
+    elif not isinstance(casas_decimais, int) and not isinstance(casas_decimais, float):
         return (round(resposta,7))
     else:
         p = 0
