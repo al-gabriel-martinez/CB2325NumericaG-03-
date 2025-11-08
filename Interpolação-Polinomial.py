@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
 class InterpolacaoPolinomial:
     def __init__(self, x, y):
         self.x = np.array(x, dtype=float)
@@ -12,13 +11,12 @@ class InterpolacaoPolinomial:
         n = self.n                               # número de pontos conhecidos
         x, y = self.x, self.y                    # pega os vetores x e y originais
         p = np.zeros_like(ponto)             # cria vetor de zeros p, que vai guardar P(x_eval)
-    
         for i in range(n):                       # para cada ponto i conhecido
             L = np.ones_like(ponto)             # começa L_i(x) = 1 (vai multiplicar fatores)
-        for j in range(n):                   # para cada outro ponto j
-            if j != i:                       # mas pula o caso j = i
-                L *= (ponto - x[j]) / (x[i] - x[j])  # multiplica pelos termos do produto
-        p += y[i] * L                                   # soma y_i * L_i(x) ao resultado final
+            for j in range(n):                   # para cada outro ponto j
+                if j != i:                       # mas pula o caso j = i
+                    L *= (ponto - x[j]) / (x[i] - x[j])  # multiplica pelos termos do produto
+            p += y[i] * L                                   # soma y_i * L_i(x) ao resultado final
         return p
     def newton_coef(self):
         n = self.n #número de pontos conhecidos
@@ -66,3 +64,4 @@ class InterpolacaoPolinomial:
         plt.legend()
         plt.grid()
         plt.show()
+
