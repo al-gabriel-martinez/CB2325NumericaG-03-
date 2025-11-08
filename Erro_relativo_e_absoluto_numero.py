@@ -16,7 +16,7 @@ Detalhes:
 - O epsilon da máquina é definido como o menor número que, somado a 1, produz um resultado diferente de 1.
 """
 def erro_absoluto(valor, aprox, casas_decimais=7):
-	"""
+    """
     Calcula o erro absoluto entre um valor real e uma aproximação.
 
     Fórmula dada por: |valor real - valor aproximado| 
@@ -46,7 +46,7 @@ def erro_absoluto(valor, aprox, casas_decimais=7):
                 p = i # Valor de casas decimais é atualizado.  
         return(round(abs(valor - aprox),p))
 def erro_relativo(valor, aprox, casas_decimais=7):
-	"""
+    """
     Calcula o erro relativo entre um valor real e uma aproximação.
 
     Fórmula: |valor real - valor aproximado| / | valor real| 
