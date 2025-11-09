@@ -1,7 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 # Método de Lagrange
-def lagrange(x, y, n, ponto):
+def lagrange(x, y, ponto):
+    n = len(x)
     # Converte listas em arrays NumPy (para operações vetorizadas)
     x = np.array(x, dtype=float)
     y = np.array(y, dtype=float)
@@ -20,7 +21,8 @@ def lagrange(x, y, n, ponto):
     return p
 # Cálculo dos coeficientes do polinômio de Newton
 # (Diferenças divididas)
-def newton_coef(x, y, n):
+def newton_coef(x, y):
+    n = len(x)
     coef = np.zeros((n, n))
     coef[:,0] = y  # primeira coluna recebe os valores y_i
     # Calcula as diferenças divididas
@@ -31,10 +33,11 @@ def newton_coef(x, y, n):
     coeficientes = coef[0, :]
     return coeficientes
 # Avaliação do polinômio de Newton em um ponto (ou vetor)
-def newton_eval(x, y, n, ponto, coeficientes=None):
+def newton_eval(x, y, ponto, coeficientes=None):
+    n = len(x)
     # Se os coeficientes não foram fornecidos, calcula
     if coeficientes is None:
-        coeficientes = newton_coef(x, y, n)
+        coeficientes = newton_coef(x, y)
     ponto = np.array(ponto, dtype=float)
     a = coeficientes
     k = len(a)
@@ -60,14 +63,14 @@ def eval_vandermonde(x, y, ponto, coeficientes=None):
         p += a * ponto**i
     return p
 # Função genérica para plotar o polinômio interpolador
-def plot(x, y, n, x_plot, metodo:str, num_pontos=200):
+def plot(x, y, x_plot, metodo:str, num_pontos=200):
     # Gera pontos igualmente espaçados para desenhar a curva
     x_plot = np.linspace(min(x), max(x), num_pontos)
     # Escolhe o método de interpolação
     if metodo == 'lagrange':
-        y_plot = lagrange(x, y, n, x_plot)
+        y_plot = lagrange(x, y, x_plot)
     elif metodo == 'newton':
-        y_plot = newton_eval(x, y, n, x_plot, coeficientes=None)
+        y_plot = newton_eval(x, y, x_plot, coeficientes=None)
     else:
         y_plot = eval_vandermonde(x, y, x_plot, coeficientes=None)
     # Exibe os pontos conhecidos e o polinômio interpolador
@@ -76,5 +79,6 @@ def plot(x, y, n, x_plot, metodo:str, num_pontos=200):
     plt.legend()
     plt.grid()
     plt.show()
+
 
 
