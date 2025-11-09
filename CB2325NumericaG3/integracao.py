@@ -5,12 +5,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def poligono4(ponto, ponto2, *, cor='skyblue', alpha=0.7):
-    """Preencha um quadrilátero com base em y=0 entre duas abscissas.
+    
+    """
+    Preenche um quadrilátero com base em y=0 entre duas abscissas.
 
     Desenha um polígono de 4 lados cuja base está em y=0, com vértices
     x = ponto[0] e x = ponto2[0], e topos em y = ponto[1] e y = ponto2[1].
 
-    Parâmetros:
+    Parametres:
       ponto: Tupla (x_esq, y_esq).
       ponto2: Tupla (x_dir, y_dir).
       cor: Cor do preenchimento.
@@ -22,28 +24,31 @@ def poligono4(ponto, ponto2, *, cor='skyblue', alpha=0.7):
 
 
 def integral(f, a, b, n, plotar = True,metodo = "trapezio",suavidade = 500,cor_grafico = '#1f77b4',opacidade_grafico = 1,cor_area = 'skyblue',opacidade_area = 0.7,grade =True):
-    """Aproxime ∫_a^b f(x) dx por trapézio, ponto_medio ou simpson.
+    
+    """
+    Aproxima ∫_a^b f(x) dx por trapézio, ponto_medio ou simpson.
 
     A partição é uniforme: delta_x = (b - a) / n. Para 'plotar=True',
     a função é amostrada com 'suavidade' pontos por unidade de comprimento.
 
-    Parâmetros:
-      f: Função escalar (f(x) -> float).
-      a: Extremo esquerdo do intervalo.
-      b: Extremo direito do intervalo.
-      n: Número de subintervalos.
-      plotar: Se True, desenha função e áreas aproximadas.
-      metodo: 'trapezio', 'ponto_medio' ou 'simpson'.
-      suavidade: Densidade de pontos p/ desenhar a curva (plot).
-      cor_grafico: Cor da curva f(x).
-      opacidade_grafico: Opacidade da curva f(x).
-      cor_area: Cor do preenchimento das áreas.
-      opacidade_area: Opacidade do preenchimento das áreas.
-      grade: Se True, exibe grade no gráfico.
+    Parametres:
+      f : Função escalar (f(x) -> float).
+      a : Extremo esquerdo do intervalo.
+      b : Extremo direito do intervalo.
+      n : Número de subintervalos.
+      plotar : Se True, desenha função e áreas aproximadas.
+      metodo : 'trapezio', 'ponto_medio' ou 'simpson'.
+      suavidade : Densidade de pontos p/ desenhar a curva (plot).
+      cor_grafico : Cor da curva f(x).
+      opacidade_grafico : Opacidade da curva f(x).
+      cor_area : Cor do preenchimento das áreas.
+      opacidade_area : Opacidade do preenchimento das áreas.
+      grade : Se True, exibe grade no gráfico.
 
-    Retorna:
-      float: Aproximação numérica de ∫_a^b f(x) dx.
+    Returns:
+      float : Aproximação numérica de ∫_a^b f(x) dx.
     """
+
     a = float(a)
     b = float(b)
     delta_x = (b - a) / n
@@ -105,11 +110,10 @@ def integral(f, a, b, n, plotar = True,metodo = "trapezio",suavidade = 500,cor_g
                 plt.fill_between(X_G, G, color=cor_area, alpha=opacidade_area)
 
             soma += (f_esq + 4.0*f_xm + f_dir) * (delta_x / 6.0)
-         
-            
+               
     if plotar:
-        plt.plot(X,F,color = cor_grafico,alpha=opacidade_grafico)
-        plt.title(f'Gráfico da função')
+        plt.plot(X,F,color = cor_grafico, alpha=opacidade_grafico)
+        plt.title(f'Gráfico da função abaixo')
         if grade:
             plt.grid()
         plt.xlabel('Eixo X')
@@ -117,23 +121,3 @@ def integral(f, a, b, n, plotar = True,metodo = "trapezio",suavidade = 500,cor_g
         plt.show()
 
     return soma 
-
-if __name__ == "__main__":
-    
-    f = lambda x: x**2
-    g = lambda x: math.sin(x)
-  
-    area1 = integral(f, 0, 1, 4, plotar = False)
-    print("função f com metodo do trapezio", area1)  
-    area2 = integral(g, 0, math.pi, 100, cor_grafico= 'black')
-    print("função g com metodo do trapezio", area2)  
-
-    area3 = integral(f, 0, 1, 4, metodo = 'ponto_medio', cor_area='purple')
-    print("função f com metodo do ponto medio", area3)  
-    area4 = integral(g, 0, math.pi, 100, metodo = 'ponto_medio')
-    print("função g com metodo do ponto medio", area4)  
-
-    area5 = integral(f, 0, 1, 4, metodo ='simpson',opacidade_grafico=0.7, grade = False)
-    print("função f com metodo do simpson", area5)  
-    area6 = integral(g, 0, math.pi, 100, metodo='simpson', opacidade_area=1)
-    print("função g com metodo do simpson", area6)  
