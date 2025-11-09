@@ -90,13 +90,6 @@ def hermite_interp(x: list, deriv: list, plot=True, title=""):
         -------
         float ou np.array
             Valor do polinômio em t.
-        
-        Exemplos
-        --------
-
-        
-        Notas
-        -----
         """
         if isinstance(t, (int, float)):
             result = 0
