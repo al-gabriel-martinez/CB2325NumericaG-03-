@@ -171,10 +171,6 @@ def newton_raphson(f, x0, df=None, tol=1e-6, max_iter=100, h=1e-8, retornar_hist
                 raise RuntimeError(f"Derivada muito próxima de zero na iteração {i}. "
                              f"x={x:.6f}, f'(x)={dfx:.2e}")
 
-        # Verifica convergência da função
-        if abs(fx) < tol:
-            return (x, historico) if retornar_historico else x
-        
         # Atualização de Newton
         x_new = x - fx / dfx
         historico.append(x_new)
