@@ -69,7 +69,17 @@ def test_erro_relativo_tipos_invalidos():
     with pytest.raises(ZeroDivisionError, match="Valor real é zero"):
         erro_relativo(0, 1.23)
 
+def test_epsilon_aproximado():
+    eps = epsilon_da_maquina()
 
+    # checagens básicas 
+    assert isinstance(eps, float)
+    assert eps > 0.0
+    assert eps < 1e-12  # bem folgado (o real é ~2.22e-16)
+
+    # propriedades essenciais:
+    assert 1.0 + eps > 1.0
+    assert 1.0 + eps/2.0 == 1.0
     
 
 
