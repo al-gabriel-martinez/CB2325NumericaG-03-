@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from aproximacao_de_raizes import raiz
+from CB2325NumericaG3.aproximacao_de_raizes import raiz
 
 
 class VisualizadorRaizes:
@@ -100,7 +100,7 @@ def visualizacao_rapida(f, a=0, b=2, method="bissecao", x0=None, df=None, titulo
     """
     Visualização rápida e automática de métodos de busca de raízes.
     
-    Parâmetros
+    Parameters
     ----------
     f : callable
         Função para encontrar a raiz
@@ -117,7 +117,7 @@ def visualizacao_rapida(f, a=0, b=2, method="bissecao", x0=None, df=None, titulo
     titulo : str, optional
         Título do gráfico (padrão: baseado no método)
     
-    Retorno
+    Returns
     -------
     tuple
         (raiz, historico) - raiz encontrada e histórico de iterações
@@ -145,45 +145,3 @@ def visualizacao_rapida(f, a=0, b=2, method="bissecao", x0=None, df=None, titulo
     visualizar_metodo(f, historico, a=a-1, b=b+1, titulo=titulo)
     
     return raiz1, historico
-
-
-# Retirar as aspas para ver os exemplos
-'''
-def f(x):
-    return x**3 - 9*x + 5
-
-historico = [1.0, 0.5, 0.75, 0.625, 0.5625, 0.53125, 0.546875, 0.5546875, 0.55078125]
-
-visualizar_metodo(f, historico, a=-4, b=5, titulo="Método da Bisseção")
-
-
-historico_secante = [0, 2, 0.4, 0.6, 0.55, 0.551, 0.5508]
-
-visualizar_metodo(f, historico_secante, a=-4, b=5, titulo="Método da Secante")
-
-
-historico_newton = [2.0, 1.8333, 1.7381, 1.7001, 1.6905, 1.6899]
-
-visualizar_metodo(f, historico_newton, a=-4, b=5, titulo="Método de Newton")
-'''
-
-
-'''
-# Exemplo de uso com visualização
-if __name__ == "__main__":
-    # Teste com histórico
-    f = lambda x: x**3 - 6*x**2 - 8
-    
-    print("=" * 50)
-    print("Teste com visualização")
-    print("=" * 50)
-    
-    # Bisseção com histórico
-    raiz1, historico1 = visualizacao_rapida(f, a=-10, b=10, method="bissecao",titulo="Método de Bisseção")
-    
-    print()
-    
-    # Newton com histórico
-    df = lambda x: 3*x**2 - 12*x
-    raiz2, historico2 = visualizacao_rapida(f, a=-10, b=10, method="newton", x0=1.0, df=df, titulo="Método de Newton")
-'''

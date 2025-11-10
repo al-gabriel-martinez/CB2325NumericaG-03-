@@ -24,7 +24,7 @@ def bissecao(f, a, b, tol=1e-6, max_iter=100, retornar_historico=False):
     de Newton ele é bem mais preciso e também mais consistente, assim como foi
     explicito na observação feito antes.
     
-    Parâmetros
+    Parameters
     ----------
     f : callable
         Função da qual se deseja encontrar a raiz.
@@ -37,7 +37,7 @@ def bissecao(f, a, b, tol=1e-6, max_iter=100, retornar_historico=False):
     max_iter : int, optional
         Número máximo de iterações (padrão: 100).
     
-    Retorno
+    Returns
     -------
     float
         Aproximação da raiz da função.
@@ -108,7 +108,7 @@ def newton_raphson(f, x0, df=None, tol=1e-6, max_iter=100, h=1e-8, retornar_hist
     esse método também é mais rápido que o de bisseção, apesar de não ter tanta
     estabilidade em algumas funções, como o exemplo dado antes, f(x) = sex(1/x).
     
-    Parâmetros
+    Parameters
     ----------
     f : callable
         Função da qual se deseja encontrar a raiz.
@@ -123,7 +123,7 @@ def newton_raphson(f, x0, df=None, tol=1e-6, max_iter=100, h=1e-8, retornar_hist
     h : float, optional
         Passo para aproximação numérica da derivada (padrão: 1e-8).
     
-    Retorno
+    Returns
     -------
     float
         Aproximação da raiz da função.
@@ -192,7 +192,7 @@ def raiz(f, a=None, b=None, x0=None, df=None, tol=1e-6, max_iter=100, method="bi
     Esta função permite escolher entre diferentes métodos numéricos para
     encontrar raízes de funções reais.
     
-    Parâmetros
+    Parameters
     ----------
     f : callable
         Função da qual se deseja encontrar a raiz.
@@ -211,7 +211,7 @@ def raiz(f, a=None, b=None, x0=None, df=None, tol=1e-6, max_iter=100, method="bi
     method : str, optional
         Método a ser usado: "bissecao" ou "newton" (padrão: "bissecao").
     
-    Retorno
+    Returns
     -------
     float
         Aproximação da raiz da função.
@@ -233,6 +233,7 @@ def raiz(f, a=None, b=None, x0=None, df=None, tol=1e-6, max_iter=100, method="bi
     >>> print(f"{raiz_1:.3f}")
     2.730
     """
+
     method = method.lower()
     
     if method in ["bissecao", "bisseção", "bisseccao", "bissecção", "bissec", "bisec", "bi", "b"]:
@@ -253,83 +254,3 @@ def raiz(f, a=None, b=None, x0=None, df=None, tol=1e-6, max_iter=100, method="bi
     else:
         raise ValueError(f"Método '{method}' não reconhecido. "
                         f"Use 'bissecao' ou 'newton'.")
-
-
-
-
-# Retirar as aspas para ver os exemplos
-"""
-# Exemplo de uso sem histórico
-if __name__ == "__main__":
-    # Teste 1: Função do exemplo do documento
-    f = lambda x: x**3 - 9*x + 5
-    
-    print("=" * 50)
-    print("Teste 1: f(x) = x³ - 9x + 5")
-    print("=" * 50)
-    
-    # Usando bisseção
-    raiz_0 = raiz(f, a=0, b=2, tol=1e-6, method="bissecao")
-    print(f"Raiz (bisseção, [0,2]): {raiz_0:.6f}")
-    print(f"f({raiz_0:.6f}) = {f(raiz_0):.2e}")
-    
-    # Usando Newton-Raphson
-    df = lambda x: 3*x**2 - 9
-    raiz_1 = raiz(f, x0=1.0, df=df, tol=1e-6, method="newton")
-    print(f"Raiz (Newton, x0=1.0): {raiz_1:.6f}")
-    print(f"f({raiz_1:.6f}) = {f(raiz_1):.2e}")
-    
-    print()
-    
-    # Teste 2: x² - 4 = 0
-    f2 = lambda x: x**2 - 4
-    df2 = lambda x: 2*x
-    
-    print("=" * 50)
-    print("Teste 2: f(x) = x² - 4")
-    print("=" * 50)
-    
-    raiz_2 = raiz(f2, a=0, b=3, method="bissecao")
-    print(f"Raiz (bisseção): {raiz_2:.6f}")
-    print(f"f({raiz_2:.6f}) = {f2(raiz_2):.2e}")
-    
-    raiz_3 = raiz(f2, x0=1.0, df=df2, method="newton")
-    print(f"Raiz (Newton): {raiz_3:.6f}")
-    print(f"f({raiz_3:.6f}) = {f2(raiz_3):.2e}")
-"""
-
-'''
-# Exemplo de uso com histórico
-if __name__ == "__main__":
-    # Teste com histórico
-    f = lambda x: x**3 - 9*x + 5
-    
-    print("=" * 50)
-    print("Teste com histórico")
-    print("=" * 50)
-    
-    # Bisseção com histórico
-    resultado_b = raiz(f, a=0, b=2, method="bissecao", retornar_historico=True)
-    if isinstance(resultado_b, tuple):
-        raiz_b, historico_b = resultado_b
-    else:
-        raiz_b, historico_b = resultado_b, [resultado_b]
-    
-    print(f"Raiz (bisseção): {raiz_b:.6f}")
-    print(f"Histórico: {[f'{x:.6f}' for x in historico_b]}")
-    print(f"Número de iterações: {len(historico_b)}")
-    
-    print()
-    
-    # Newton com histórico
-    df = lambda x: 3*x**2 - 9
-    resultado_n = raiz(f, x0=1.0, df=df, method="newton", retornar_historico=True)
-    if isinstance(resultado_n, tuple):
-        raiz_n, historico_n = resultado_n
-    else:
-        raiz_n, historico_n = resultado_n, [resultado_n]
-    
-    print(f"Raiz (Newton): {raiz_n:.6f}")
-    print(f"Histórico: {[f'{x:.6f}' for x in historico_n]}")
-    print(f"Número de iterações: {len(historico_n)}")
-'''
