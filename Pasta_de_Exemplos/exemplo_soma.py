@@ -1,4 +1,6 @@
-from soma_de_kahan import soma_normal_lista, soma_de_kahan_lista
+import sys
+sys.path.append(".")
+from CB2325NumericaG3.soma_de_kahan import soma_normal_lista, soma_de_kahan_lista
 
 if __name__ == '__main__':
     x = [1e-10] * 10000 + [1.0] # Primeiro vários pequenos depois um grande.
@@ -11,7 +13,6 @@ if __name__ == '__main__':
     print("Soma na ordem invertida (grande -> pequenos)")
     print(f"Soma normal (invertida): {soma_normal_lista(x_invertido)}")
     print(f"Soma Kahan (invertida) : {soma_de_kahan_lista(x_invertido)}")
-
 
     # exemplo 2:
 
