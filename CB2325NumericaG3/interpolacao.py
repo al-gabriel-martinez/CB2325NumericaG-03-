@@ -116,7 +116,7 @@ def linear_interp(X_coord: list, Y_coord: list, plot: bool = True, title: str = 
   # Retornando a função.
   return f
 
-def polinomial_interp(X, Y, method = "lagrange", plot = True, title = "" ):
+def poly_interp(X, Y, method = "lagrange", plot = True, title = "" ):
 
   """
   Implementa métodos clássicos de interpolação polinomial.
