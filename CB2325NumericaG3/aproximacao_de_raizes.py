@@ -10,7 +10,9 @@ com o método de bisseção, mas com o método de Newton-Raphson a aproximação
 podendo divergir.
 """
 
-def bissecao(f, a, b, tol=1e-6, max_iter=100, retornar_historico=False):
+from CB2325NumericaG3.visualizacao_grafica import VisualizadorRaizes
+
+def bissecao(f, a, b, tol=1e-6, max_iter=100, graf=True, retornar_historico=False):
     """
     Encontra uma raiz da função f no intervalo [a, b] usando o Método da Bisseção.
     
@@ -36,6 +38,10 @@ def bissecao(f, a, b, tol=1e-6, max_iter=100, retornar_historico=False):
         Tolerância para o critério de parada (padrão: 1e-6).
     max_iter : int, optional
         Número máximo de iterações (padrão: 100).
+    graf : bool, optional
+        Se mostra o gráfico da função ou não.
+    retornar_historico : bool, optional
+        Se retorna o historico de intervalos ou não.
     
     Returns
     -------
@@ -80,6 +86,9 @@ def bissecao(f, a, b, tol=1e-6, max_iter=100, retornar_historico=False):
         
         # Verifica convergência
         if abs(fc) < tol or (b - a) / 2.0 < tol:
+            if graf:
+                viz = VisualizadorRaizes(f)
+                viz.visualizar(historico, a=a, b=b, titulo="Método da Bisseção")
             return (c, historico) if retornar_historico else c
         
         # Atualiza o intervalo
@@ -93,7 +102,7 @@ def bissecao(f, a, b, tol=1e-6, max_iter=100, retornar_historico=False):
     raise RuntimeError(f"Método da bisseção não convergiu após {max_iter} iterações.")
 
 
-def newton_raphson(f, x0, df=None, tol=1e-6, max_iter=100, h=1e-8, retornar_historico=False):
+def newton_raphson(f, x0, df=None, tol=1e-6, max_iter=100, h=1e-8, graf=True, retornar_historico=False):
     """
     Encontra uma raiz da função f usando o Método de Newton-Raphson.
     
@@ -122,6 +131,10 @@ def newton_raphson(f, x0, df=None, tol=1e-6, max_iter=100, h=1e-8, retornar_hist
         Número máximo de iterações (padrão: 100).
     h : float, optional
         Passo para aproximação numérica da derivada (padrão: 1e-8).
+    graf : bool, optional
+        Se mostra o gráfico da função ou não.
+    retornar_historico : bool, optional
+        Se retorna o historico de pontos ou não.
     
     Returns
     -------
@@ -169,6 +182,9 @@ def newton_raphson(f, x0, df=None, tol=1e-6, max_iter=100, h=1e-8, retornar_hist
         
         # Verifica convergência
         if abs(fx) < tol:
+            if graf:
+                viz = VisualizadorRaizes(f)
+                viz.visualizar(historico, titulo="Método de Newton-Raphson")
             return (x, historico) if retornar_historico else x
 
         # Atualização de Newton
@@ -177,6 +193,9 @@ def newton_raphson(f, x0, df=None, tol=1e-6, max_iter=100, h=1e-8, retornar_hist
         
         # Verifica convergência pela mudança em x
         if abs(x_new - x) < tol:
+            if graf:
+                viz = VisualizadorRaizes(f)
+                viz.visualizar(historico, titulo="Método de Newton-Raphson")
             return (x_new, historico) if retornar_historico else x_new
         
         x = x_new
@@ -185,7 +204,7 @@ def newton_raphson(f, x0, df=None, tol=1e-6, max_iter=100, h=1e-8, retornar_hist
     else:
         raise RuntimeError(f"Método de Newton-Raphson não convergiu após {max_iter} iterações.")
 
-def raiz(f, a=None, b=None, x0=None, df=None, tol=1e-6, max_iter=100, method="bissecao", retornar_historico=False):
+def raiz(f, a=None, b=None, x0=None, df=None, tol=1e-6, max_iter=100, method="bissecao", graf=True, retornar_historico=False):
     """
     Interface unificada para encontrar raízes de funções.
     
@@ -210,6 +229,10 @@ def raiz(f, a=None, b=None, x0=None, df=None, tol=1e-6, max_iter=100, method="bi
         Número máximo de iterações (padrão: 100).
     method : str, optional
         Método a ser usado: "bissecao" ou "newton" (padrão: "bissecao").
+    graf : bool, optional
+        Se mostra o gráfico da função ou não.
+    retornar_historico : bool, optional
+        Se retorna o historico de pontos ou não.
     
     Returns
     -------
@@ -239,7 +262,7 @@ def raiz(f, a=None, b=None, x0=None, df=None, tol=1e-6, max_iter=100, method="bi
     if method in ["bissecao", "bisseção", "bisseccao", "bissecção", "bissec", "bisec", "bi", "b"]:
         if a is None or b is None:
             raise ValueError("O método da bisseção requer os parâmetros 'a' e 'b'.")
-        return bissecao(f, a, b, tol, max_iter, retornar_historico=retornar_historico)
+        return bissecao(f, a, b, tol, max_iter, graf=graf, retornar_historico=retornar_historico)
     
     elif method in ["newton", "raphson", "newton-raphson", "newtonraphson", "new", "n"]:
         if x0 is None:
@@ -249,7 +272,7 @@ def raiz(f, a=None, b=None, x0=None, df=None, tol=1e-6, max_iter=100, method="bi
             else:
                 raise ValueError("O método de Newton-Raphson requer o parâmetro 'x0' "
                                "ou os parâmetros 'a' e 'b' para estimativa inicial.")
-        return newton_raphson(f, x0, df, tol, max_iter, retornar_historico=retornar_historico)
+        return newton_raphson(f, x0, df, tol, max_iter, graf=graf, retornar_historico=retornar_historico)
     
     else:
         raise ValueError(f"Método '{method}' não reconhecido. "
