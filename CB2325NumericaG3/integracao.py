@@ -23,7 +23,7 @@ def poligono4(ponto, ponto2, *, cor='skyblue', alpha=0.7):
     plt.fill(x_vertices, y_vertices, color=cor, alpha=alpha)
 
 
-def integral(f, a, b, n, plotar = True,metodo = "trapezio",suavidade = 500,cor_grafico = '#1f77b4',opacidade_grafico = 1,cor_area = 'skyblue',opacidade_area = 0.7,grade =True):
+def integral(f, a, b, n, plotar = True, metodo = "trapezio", suavidade = 500, cor_grafico = '#1f77b4', opacidade_grafico = 1, cor_area = 'skyblue', opacidade_area = 0.7, grade =True):
     
     """
     Aproxima ∫_a^b f(x) dx por trapézio, ponto_medio ou simpson.
@@ -32,21 +32,45 @@ def integral(f, a, b, n, plotar = True,metodo = "trapezio",suavidade = 500,cor_g
     a função é amostrada com 'suavidade' pontos por unidade de comprimento.
 
     Parametres:
-      f : Função escalar (f(x) -> float).
-      a : Extremo esquerdo do intervalo.
-      b : Extremo direito do intervalo.
-      n : Número de subintervalos.
-      plotar : Se True, desenha função e áreas aproximadas.
-      metodo : 'trapezio', 'ponto_medio' ou 'simpson'.
-      suavidade : Densidade de pontos p/ desenhar a curva (plot).
-      cor_grafico : Cor da curva f(x).
-      opacidade_grafico : Opacidade da curva f(x).
-      cor_area : Cor do preenchimento das áreas.
-      opacidade_area : Opacidade do preenchimento das áreas.
-      grade : Se True, exibe grade no gráfico.
+      f : callable
+        Função escalar (f(x) -> float).
+
+      a : float
+        Extremo esquerdo do intervalo.
+
+      b : float
+        Extremo direito do intervalo.
+
+      n : int
+        Número de subintervalos.
+
+      plotar : bool, optional 
+        Se True, desenha função e áreas aproximadas.
+
+      metodo : string, optional
+        'trapezio', 'ponto_medio' ou 'simpson'.
+
+      suavidade : int, optional
+        Densidade de pontos p/ desenhar a curva (plot).
+
+      cor_grafico : string, optional
+        Cor da curva f(x).
+
+      opacidade_grafico : float, optional
+        Opacidade da curva f(x).
+
+      cor_area : string, optional
+        Cor do preenchimento das áreas.
+
+      opacidade_area : float, optional
+        Opacidade do preenchimento das áreas.
+
+      grade : bool, optional
+        Se True, exibe grade no gráfico.
 
     Returns:
-      float : Aproximação numérica de ∫_a^b f(x) dx.
+      soma : float 
+        Aproximação numérica de ∫_a^b f(x) dx.
     """
 
     a = float(a)
