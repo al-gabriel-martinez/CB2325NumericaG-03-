@@ -13,11 +13,19 @@ def poligono4(ponto, ponto2, *, cor='skyblue', alpha=0.7):
     x = ponto[0] e x = ponto2[0], e topos em y = ponto[1] e y = ponto2[1].
 
     Parametres:
-      ponto: Tupla (x_esq, y_esq).
-      ponto2: Tupla (x_dir, y_dir).
-      cor: Cor do preenchimento.
-      alpha: Opacidade do preenchimento.
+      ponto : tuple 
+        (x_esq, y_esq).
+
+      ponto2 : tuple
+        (x_dir, y_dir).
+
+      cor : string
+        Cor do preenchimento.
+
+      alpha : float 
+        Opacidade do preenchimento.
     """
+
     x_vertices = [ponto[0], ponto2[0], ponto2[0], ponto[0]]
     y_vertices = [ponto[1], ponto2[1], 0,        0       ]
     plt.fill(x_vertices, y_vertices, color=cor, alpha=alpha)
