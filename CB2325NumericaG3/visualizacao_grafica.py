@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from CB2325NumericaG3.aproximacao_de_raizes import raiz
+# from CB2325NumericaG3.aproximacao_de_raizes import raiz #Olhar comentário em def visualizacao_rapida():
 
 
 class VisualizadorRaizes:
@@ -95,6 +95,7 @@ def visualizar_metodo(f, historico, **kwargs):
     viz = VisualizadorRaizes(f)
     viz.visualizar(historico, **kwargs)
 
+''' "Não é mais necessário por conta da implementação no código principal." -Anizio
 # Método de visualização rápida
 def visualizacao_rapida(f, a=0, b=2, method="bissecao", x0=None, df=None, titulo=None):
     """
@@ -145,3 +146,6 @@ def visualizacao_rapida(f, a=0, b=2, method="bissecao", x0=None, df=None, titulo
     visualizar_metodo(f, historico, a=a-1, b=b+1, titulo=titulo)
     
     return raiz1, historico
+
+''' 
+
