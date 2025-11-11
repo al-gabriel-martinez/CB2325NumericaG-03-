@@ -355,4 +355,4 @@ def raiz(f, a=None, b=None, x0=None, df=None, tol=1e-6, max_iter=100, method="bi
     
     else:
         raise ValueError(f"Método '{method}' não reconhecido. "
-                        f"Use 'bissecao' ou 'newton'.")
+                        f"Use 'bissecao', 'secante' ou'newton'.")
