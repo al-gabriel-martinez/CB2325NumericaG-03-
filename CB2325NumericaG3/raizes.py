@@ -10,7 +10,7 @@ com o método de bisseção, mas com o método de Newton-Raphson a aproximação
 podendo divergir.
 """
 
-from CB2325NumericaG3.visualizacao_grafica import VisualizadorRaizes
+from CB2325NumericaG3.visualizacao_raizes import VisualizadorRaizes
 
 def bissecao(f, a, b, tol=1e-6, max_iter=100, graf=True, retornar_historico=False):
     """

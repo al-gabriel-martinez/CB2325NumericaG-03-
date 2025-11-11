@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-# from CB2325NumericaG3.aproximacao_de_raizes import raiz #Olhar comentário em def visualizacao_rapida():
 
 
 class VisualizadorRaizes:
@@ -77,75 +76,10 @@ class VisualizadorRaizes:
         
         plt.tight_layout()
         plt.show()
-        
 
-
-        
-        # Informações como raiz, y da raiz, iterações e erro final
-        # print("=" * 40)
-        # print(f"Raiz encontrada: {historico[-1]:.8f}")
-        # print(f"f(raiz) = {self.f(historico[-1]):.2e}")
-        # print(f"Iterações: {len(historico)}")
-        # print(f"Erro final: {erros[-1]:.2e}")
-        # print("=" * 40)
 
 # Função de uso
 def visualizar_metodo(f, historico, **kwargs):
     """Função para visualização."""
     viz = VisualizadorRaizes(f)
     viz.visualizar(historico, **kwargs)
-
-''' "Não é mais necessário por conta da implementação no código principal." -Anizio
-# Método de visualização rápida
-def visualizacao_rapida(f, a=0, b=2, method="bissecao", x0=None, df=None, titulo=None):
-    """
-    Visualização rápida e automática de métodos de busca de raízes.
-    
-    Parameters
-    ----------
-    f : callable
-        Função para encontrar a raiz
-    a : float, optional
-        Limite inferior do intervalo (padrão: 0)
-    b : float, optional
-        Limite superior do intervalo (padrão: 2)
-    method : str, optional
-        Método: "bissecao" ou "newton" (padrão: "bissecao")
-    x0 : float, optional
-        Ponto inicial para Newton (padrão: ponto médio de [a,b])
-    df : callable, optional
-        Derivada para Newton (se não fornecida, calcula numericamente)
-    titulo : str, optional
-        Título do gráfico (padrão: baseado no método)
-    
-    Returns
-    -------
-    tuple
-        (raiz, historico) - raiz encontrada e histórico de iterações
-    
-    Exemplos
-    --------
-    >>> # Uso mais simples possível:
-    >>> f = lambda x: x**3 - 9*x + 5
-    >>> raiz, historico = visualizacao_rapida(f)
-    >>> 
-    >>> # Com Newton:
-    >>> raiz, historico = visualizacao_rapida(f, method="newton")
-    >>> 
-    >>> # Com intervalo personalizado:
-    >>> raiz, historico = visualizacao_rapida(f, a=-1, b=3)
-    """
-    # Configurar x0 automático para Newton se não fornecido
-    if method == "newton" and x0 is None:
-        x0 = (a + b) / 2
-    
-    # Calcular raiz com histórico
-    raiz1, historico = raiz(f, a=a, b=b, x0=x0, df=df, method=method, retornar_historico=True)
-    
-    # Visualizar
-    visualizar_metodo(f, historico, a=a-1, b=b+1, titulo=titulo)
-    
-    return raiz1, historico
-
-''' 
-
