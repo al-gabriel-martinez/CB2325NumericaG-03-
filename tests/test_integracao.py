@@ -63,21 +63,27 @@ class TestIntegral:
     def test_intervalo_invertido(self, funcao, a, b, n, valor_esp):
         area = integral(funcao, a, b, n, plotar=False, metodo='simpson')
         assert math.isclose(area, valor_esp, abs_tol=0.01)
-    
-    def test_polinomio(self):
-        pytest.skip("Testar resultado da integral de uma função polinomial")
-        
-    def test_constante(self):
-        pytest.skip("Testar validação de número de partições inválido (n <= 0, n não inteiro)")
 
     def test_precisao(self):
-        pytest.skip("Testar convergência do método com aumento de n")
+        area1 = integral(lambda x: x**3 + 4 * x**2, -2, 3, 100, plotar=False, metodo="simpson")
+        area2 = integral(lambda x: x**3 + 4 * x**2, -2, 3, 1000, plotar=False, metodo="simpson")
+        # Resultado esperado = 62.916666...
 
-    def test_limites_nao_usuais(self):
-        pytest.skip("Testar comportamento em limites e casos de borda")
-    
-    def test_nan(self):
-        pytest.skip("Testar comportamento com math.nan")  
+        assert math.isclose(area1, 62.917, abs_tol=0.01)
+        assert math.isclose(area2, 62.917, abs_tol=0.001)
+        assert abs(area2 - 62.917) < abs(area1 - 62.917)  # convergência
 
-    def test_inf(self):  
-        pytest.skip("Testar comportamento com math.inf")
+    @pytest.mark.parametrize(
+        "funcao, a, b, n, metodo, condicao",
+        [
+            # a == b, então resultado 0
+            (lambda x: x**2, 5, 5, 1000, 'simpson', lambda area: math.isclose(area, 0.0, abs_tol=1e-12)),  
+            # Intervalo muito pequeno
+            (lambda x: x, 0, 1e-6, 1000, 'simpson', lambda area: area < 1e-6),
+            # Intervalo grande
+            (lambda x: 1 / (x + 1), 0, 1e3, 1000, 'simpson', lambda area: (not math.isnan(area)) and area > 0),
+        ],
+    )
+    def test_limites_nao_usuais(self, funcao, a, b, n, metodo, condicao):
+        area = integral(funcao, a, b, n, plotar=False, metodo=metodo)
+        assert condicao(area)
