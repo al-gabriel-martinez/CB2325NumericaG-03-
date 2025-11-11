@@ -155,6 +155,20 @@ def poly_interp(X, Y, method = "lagrange", plot = True, title = "" ):
     embora possam diferir numericamente em estabilidade.
   - Requer `numpy` e `matplotlib`.
   """
+  if not isinstance(X, (list, np.ndarray)) or not isinstance(Y, (list, np.ndarray)):
+    raise TypeError
+  if len(X) == 0 or len(Y) == 0:
+    raise ValueError
+  if len(X) != len(Y):
+    raise ValueError
+  if len(set(X)) < len(X):
+    raise ValueError
+  def verificar_valores(vetor):
+    for valor in vetor:
+        if not isinstance(valor, (int, float)):
+            raise ValueError
+  verificar_valores(X)
+  verificar_valores(Y)
 
   # Converte listas em arrays NumPy (para operações vetorizadas)
   x = np.array(X, dtype=float)
@@ -186,6 +200,11 @@ def poly_interp(X, Y, method = "lagrange", plot = True, title = "" ):
         - Este método é numericamente instável para conjuntos grandes de pontos.
         """
 
+      if not isinstance(ponto, (list, np.ndarray,int, float)):
+        raise TypeError
+      if isinstance(ponto,(list,np.ndarray)):
+        verificar_valores(ponto)
+        
       ponto = np.array(ponto, dtype=float)
       # Vetor de zeros onde serão armazenados os valores do polinômio P(x)
       p = np.zeros_like(ponto)
@@ -241,6 +260,11 @@ def poly_interp(X, Y, method = "lagrange", plot = True, title = "" ):
         para a forma de Newton, garantindo eficiência numérica.
         """
 
+      if not isinstance(ponto, (list, np.ndarray,int, float)):
+        raise TypeError
+      if isinstance(ponto,(list,np.ndarray)):
+        verificar_valores(ponto)
+        
       ponto = np.array(ponto, dtype=float)
       k = len(coeficientes)
       p = np.zeros_like(ponto)
@@ -281,6 +305,10 @@ def poly_interp(X, Y, method = "lagrange", plot = True, title = "" ):
         para a forma de Vandermonde, garantindo eficiência numérica.
         """
 
+      if not isinstance(ponto, (list, np.ndarray,int, float)):
+        raise TypeError
+      if isinstance(ponto,(list,np.ndarray)):
+        verificar_valores(ponto)
       ponto = np.array(ponto, dtype=float)
       p = np.zeros_like(ponto)
       # Avalia o polinômio somando a_i * x^i
