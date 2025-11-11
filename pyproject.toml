@@ -17,7 +17,7 @@ authors = [
     { name = "Heitor Ramos", email = "al.heitor.pereira@impatech.edu.br" },
     { name = "João Pedro Lima", email = "al.joao.almeida@impatech.edu.br" },
     { name = "Natália Brandão", email = "al.natalia.sousa@impatech.edu.br" },
-    { name = "Theo Veiga", email = "al.theo.ambrosio@impatech.edu.br" }    
+    { name = "Theo Veiga", email = "al.theo.ambrosio@impatech.edu.br" }  
 ]
 readme = "README.md"
 license = { file = "LICENSE" }
