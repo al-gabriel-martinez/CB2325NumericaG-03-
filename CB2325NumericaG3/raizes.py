@@ -204,6 +204,80 @@ def newton_raphson(f, x0, df=None, tol=1e-6, max_iter=100, h=1e-8, graf=True, re
     else:
         raise RuntimeError(f"Método de Newton-Raphson não convergiu após {max_iter} iterações.")
 
+
+def secante(f, a, b, tol=1e-6, max_iter=100, graf=True, retornar_historico=False):
+    """
+    Encontra uma raiz da função f(x) = 0 usando o Método da Secante.
+    
+    O método da secante é uma variação do método de Newton-Raphson que
+    não requer o cálculo explícito da derivada da função. Ele utiliza
+    uma aproximação baseada em duas estimativas iniciais e é útil quando
+    df(x) é difícil de obter ou muito custosa de calcular.
+
+    Parameters
+    ----------
+    f : callable
+        Função cujo zero será encontrado.
+    a, b : float
+        Estimativas iniciais da raiz.
+    tol : float, optional
+        Tolerância para o critério de parada (padrão: 1e-6).
+    max_iter : int, optional
+        Número máximo de iterações (padrão: 100).
+    graf : bool, optional
+        Se mostra o gráfico da função e das aproximações (padrão: True).
+    retornar_historico : bool, optional
+        Se retorna o histórico de pontos (padrão: False).
+
+    Returns
+    -------
+    float ou (float, list)
+        Aproximação da raiz da função. Caso retornar_historico=True,
+        retorna também a lista dos valores aproximados.
+
+    Raises
+    ------
+    ZeroDivisionError
+        Se f(b) e f(a) forem iguais.
+    RuntimeError
+        Se o método não convergir dentro do número máximo de iterações.
+
+    Exemplos
+    --------
+    >>> f = lambda x: x**3 - 9*x + 5
+    >>> raiz = secante(f, 0, 1)
+    >>> print(f"{raiz:.6f}")
+    0.586
+    """
+
+    historico = [a, b]
+
+    for i in range(max_iter):
+        f0 = f(a)
+        f1 = f(b)
+
+        if f1 == f0:
+            raise ZeroDivisionError(
+                f"Divisão por zero: f(b) = f(a) = {f1:.6f} na iteração {i}."
+            )
+
+        # Fórmula da secante
+        x2 = b - f1 * (b - a) / (f1 - f0)
+        historico.append(x2)
+
+        # Verifica convergência
+        if abs(x2 - b) < tol or abs(f(x2)) < tol:
+            if graf:
+                viz = VisualizadorRaizes(f)
+                viz.visualizar(historico, titulo="Método da Secante")
+            return (x2, historico) if retornar_historico else x2
+
+        # Atualiza pontos
+        a, b = b, x2
+
+    raise RuntimeError(f"Método da secante não convergiu após {max_iter} iterações.")
+
+
 def raiz(f, a=None, b=None, x0=None, df=None, tol=1e-6, max_iter=100, method="bissecao", graf=True, retornar_historico=False):
     """
     Interface unificada para encontrar raízes de funções.
@@ -264,6 +338,11 @@ def raiz(f, a=None, b=None, x0=None, df=None, tol=1e-6, max_iter=100, method="bi
             raise ValueError("O método da bisseção requer os parâmetros 'a' e 'b'.")
         return bissecao(f, a, b, tol, max_iter, graf=graf, retornar_historico=retornar_historico)
     
+    elif method in ["secante", "sec", "s"]:
+        if a is None or b is None:
+            raise ValueError("O método da secante requer os parâmetros 'x0' e 'x1'.")
+        return secante(f, a, b, tol, max_iter, graf=graf, retornar_historico=retornar_historico)
+
     elif method in ["newton", "raphson", "newton-raphson", "newtonraphson", "new", "n"]:
         if x0 is None:
             # Se não forneceu x_0, tenta usar o ponto médio de [a,b] se disponível
