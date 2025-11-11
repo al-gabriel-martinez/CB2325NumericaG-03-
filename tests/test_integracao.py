@@ -28,6 +28,7 @@ class TestIntegral:
                  (lambda x: x, 1, 'b', 10000),
                  (lambda x: x, 1, ('num', 'num'), 10000),
                  (lambda x: x, 1, [0, 0], 10000),
+                 (lambda x: x,lambda x: 2*x, lambda x: 5*x, 10000),
              ]
      )
     
@@ -49,8 +50,19 @@ class TestIntegral:
         with pytest.raises(TypeError):
             integral(funcao, a, b, n, plotar=False) # type: ignore
 
-    def test_intervalo_invertido(self):
-        pytest.skip("Testar comportamento com intervalo invertido (a > b)")
+    # Descreve entradas de função, limite sup, limite inf, particoes e valor esperado.
+    @pytest.mark.parametrize(
+            "funcao, a, b, n, valor_esp",
+             [
+                 (lambda x: x, 1, 0, 10000, -0.5),
+                 (lambda x: -2*x**3 + 4*x**2 + 3*x, 5, 2, 10000, 117),
+                 (lambda x: math.cos(x), math.pi/4, -3*math.pi/4, 10000, -1.4142),
+             ]
+    )
+
+    def test_intervalo_invertido(self, funcao, a, b, n, valor_esp):
+        area = integral(funcao, a, b, n, plotar=False, metodo='simpson')
+        assert math.isclose(area, valor_esp, abs_tol=0.01)
     
     def test_polinomio(self):
         pytest.skip("Testar resultado da integral de uma função polinomial")
@@ -63,3 +75,9 @@ class TestIntegral:
 
     def test_limites_nao_usuais(self):
         pytest.skip("Testar comportamento em limites e casos de borda")
+    
+    def test_nan(self):
+        pytest.skip("Testar comportamento com math.nan")  
+
+    def test_inf(self):  
+        pytest.skip("Testar comportamento com math.inf")
