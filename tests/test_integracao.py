@@ -115,3 +115,28 @@ class TestIntegral:
     def test_constante(self, funcao, a, b, n, metodo, valor_esp):
         area = integral(funcao, a, b, n, plotar=False, metodo=metodo)
         assert math.isclose(area, valor_esp, rel_tol=1e-6)
+
+    # Funções que retornam NaN
+    @pytest.mark.parametrize(
+        "funcao, a, b, n, metodo",
+        [
+            (lambda x: math.nan, 0, 1, 1000, "simpson"),
+            (lambda x: math.nan, 0, 1, 1000, "trapezio"),
+            (lambda x: math.nan, 0, 1, 1000, "ponto_medio"),
+        ],
+    )
+    def test_nan(self, funcao, a, b, n, metodo):
+        with pytest.raises(ValueError):
+            integral(funcao, a, b, n, plotar=False, metodo=metodo)
+    
+    @pytest.mark.parametrize(
+        "funcao, a, b, n, metodo",
+        [
+            (lambda x: math.inf, 0, 1, 1000, "simpson"),
+            (lambda x: math.inf, 0, 1, 1000, "trapezio"),
+            (lambda x: math.inf, 0, 1, 1000, "ponto_medio")
+        ],
+    )
+    def test_inf(self, funcao, a, b, n, metodo):
+        with pytest.raises(OverflowError):
+            integral(funcao, a, b, n, plotar=False, metodo=metodo)
