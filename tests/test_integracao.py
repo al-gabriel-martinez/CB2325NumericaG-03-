@@ -87,3 +87,31 @@ class TestIntegral:
     def test_limites_nao_usuais(self, funcao, a, b, n, metodo, condicao):
         area = integral(funcao, a, b, n, plotar=False, metodo=metodo)
         assert condicao(area)
+
+# Descreve entradas de função, limite sup, limite inf, particoes, metodo, valor esperado.
+    @pytest.mark.parametrize(
+            "funcao, a, b, n, metodo, valor_esp",
+            [
+                (lambda x: x**2, 0, 1, 10000, 'trapezio', 1/3),
+                (lambda x: x**4 + 23, 3, 12.5, 100000, 'ponto_medio', 61205.056),
+                (lambda x: math.sin(x), 0, 1, 10000, 'trapezio', 0.459),
+                (lambda x: -3*x**4 - 2*x**2, -4, 5, 1000, 'simpson', -2615.4),
+                (lambda x: math.e**(x), -2, 3, 1000, 'ponto_medio', 19.95)
+            ]
+)
+    
+    def test_polinomio(self, funcao, a, b, n, metodo, valor_esp):
+        area = integral(funcao, a, b, n, plotar=False, metodo=metodo)
+        assert math.isclose(area, valor_esp, abs_tol=1e-3)
+
+    @pytest.mark.parametrize(
+        "funcao, a, b, n, metodo, valor_esp",
+        [
+            (lambda x: 5, 0, 2, 10000, 'simpson', 10),
+            (lambda x: -3, -1, 3, 10000, 'simpson', -12),
+            (lambda x: math.pi, 0, 1, 1000, 'simpson', math.pi)
+        ],
+    )
+    def test_constante(self, funcao, a, b, n, metodo, valor_esp):
+        area = integral(funcao, a, b, n, plotar=False, metodo=metodo)
+        assert math.isclose(area, valor_esp, rel_tol=1e-6)
