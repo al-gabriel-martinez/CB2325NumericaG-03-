@@ -4,13 +4,8 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "CB2325NumericaG3"
-<<<<<<< HEAD
-version = "0.1.0"
-description = "Descrição breve do seu projeto"
-=======
 version = "0.0.1"
 description = "Biblioteca de cálculo numérico"
->>>>>>> 
 authors = [
     { name = "Anizio Silva", email = "al.anizio.junior@impatech.edu.br" },
     { name = "Cristiane Magarinos", email = "al.cristiane.sampaio@impatech.edu.br" },
