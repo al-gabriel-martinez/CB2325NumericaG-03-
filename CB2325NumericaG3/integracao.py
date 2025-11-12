@@ -80,18 +80,56 @@ def integral(f, a, b, n, plotar = True, metodo = "trapezio", suavidade = 500, co
       soma : float 
         Aproximação numérica de ∫_a^b f(x) dx.
     """
+    if not callable(f):
+      raise TypeError("O argumento 'funcao' deve ser uma função chamável (callable).")
+    
+    try:
+        # Testa se a função pode ser avaliada
+        teste = f((a + b) / 2)
+    except Exception:
+        raise TypeError("A função fornecida não pôde ser avaliada.")
 
-    a = float(a)
-    b = float(b)
+    # Checa se o retorno é válido
+    if isinstance(teste, complex):
+        raise TypeError("A função retornou valor complexo, o que não é suportado.")
+
+    if math.isnan(teste):
+        raise TypeError("A função retornou NaN, o que não é permitido.")
+
+    if math.isinf(teste):
+        raise OverflowError("A função retornou infinito, o que não é permitido.")
+        # Conversão e validação dos limites
+    try:
+      a = float(a)
+      b = float(b)
+    except Exception:
+      raise TypeError("Os limites de integração devem ser números reais.")
+    
+    # Casos de borda: NaN e infinito
+    if any(math.isnan(x) for x in [a, b]):
+      raise TypeError("Limites de integração não podem ser NaN.")
+    
+    if any(math.isinf(x) for x in [a, b]):
+      raise OverflowError("Limites infinitos não são suportados.")
+    
+    # Validação de partições
+    if not isinstance(n, (int, np.integer)) or n <= 0:
+      raise TypeError("O número de partições deve ser um inteiro positivo.")
+    
+    if a == b:
+      return 0
+
+    if metodo not in ['trapezio', 'simpson', 'ponto_medio']:
+      raise NameError('O método deve ser trapezio, simpson ou ponto_medio')
+    
     delta_x = (b - a) / n
     soma = 0.0
+    tamanho_intervalo = abs(b-a)
+    n_pontos_f = max(1, round(tamanho_intervalo*suavidade))
+    delta_x_funçao = (b-a)/n_pontos_f
 
     F = []
     X = []
-
-    tamanho_intervalo = abs(b-a)
-    n_pontos_f = math.floor(tamanho_intervalo*suavidade)
-    delta_x_funçao = (b-a)/n_pontos_f
 
     for i in range(n_pontos_f+1):
         x_i = a+i*delta_x_funçao
