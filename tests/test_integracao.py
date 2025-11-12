@@ -121,22 +121,35 @@ class TestIntegral:
         "funcao, a, b, n, metodo",
         [
             (lambda x: math.nan, 0, 1, 1000, "simpson"),
-            (lambda x: math.nan, 0, 1, 1000, "trapezio"),
-            (lambda x: math.nan, 0, 1, 1000, "ponto_medio"),
+            (lambda x: x, math.nan, 1, 1000, "trapezio"),
+            (lambda x: x, 0, math.nan, 1000, "ponto_medio"),
+            (lambda x: x, 0, 1, math.nan, "ponto_medio")
         ],
     )
     def test_nan(self, funcao, a, b, n, metodo):
-        with pytest.raises(ValueError):
+        with pytest.raises(TypeError):
             integral(funcao, a, b, n, plotar=False, metodo=metodo)
     
     @pytest.mark.parametrize(
         "funcao, a, b, n, metodo",
         [
             (lambda x: math.inf, 0, 1, 1000, "simpson"),
-            (lambda x: math.inf, 0, 1, 1000, "trapezio"),
-            (lambda x: math.inf, 0, 1, 1000, "ponto_medio")
+            (lambda x: x, math.inf, 1, 1000, "trapezio"),
+            (lambda x: x, 0, math.inf, 1000, "ponto_medio"),
         ],
     )
     def test_inf(self, funcao, a, b, n, metodo):
         with pytest.raises(OverflowError):
+            integral(funcao, a, b, n, plotar=False, metodo=metodo)
+
+    @pytest.mark.parametrize(
+        "funcao, a, b, n, metodo",
+        [
+            (lambda x: x, 0, 1, 1000, "metodo"),
+            (lambda x: x, 0, 1, 1000, 0),
+            (lambda x: x, 0, 1, 1000, ['metodo']),
+        ],
+    )
+    def test_metodo(self, funcao, a, b, n, metodo):
+        with pytest.raises(NameError):
             integral(funcao, a, b, n, plotar=False, metodo=metodo)
