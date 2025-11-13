@@ -12,7 +12,7 @@ Biblioteca de Cálculo Numérico em Python para AV2 da Disciplina de Programaç�
 * Gabriel Falcão Martinez
 * Guilherme Oséias Pereira Da Silva
 * Heitor Ramos Pereira
-* joão Pedro Lima de Almeida
+* João Pedro Lima de Almeida
 * Natália Brandão De Sousa
 * Theo Veiga Drumond Ambrósio
 
@@ -94,7 +94,7 @@ Onde 4 é o número de casas decimais de aproximação desejada.
 
 Erro absoluto é definido como: 
 
-$ |Valor Real - Valor de Aproximação|\|Valor Real|$ 
+$|Valor Real - Valor de Aproximação|/|Valor Real|$ 
 
 Para a função retornar qual o erro relativo de uma dada aproximação, o usuário deve:
 
@@ -211,13 +211,36 @@ print(H(0.5))
 
 ### Integração
 
+#### Trapézio
+#### Ponto Médio 
+#### Simpson 
+
 ### Raízes
 
+#### Bisseção 
+#### Newton - Raphson
+#### Secante
+
 ### Aproximação
+
+#### Polinomial
+
+#### Exponencial 
+
+#### Cálculo de Resíduos
+
 
 ### Soma de Kahan 
 A soma de Kahan é uma forma de minimizar os erros de cancelamento gerados ao somar números grandes com números pequenos.
 Caso o usuário deseje utilizar essa função basta fornecer uma lista contendo os números que deseja somar. 
+Existem duas funções no arquivo:
+
+- soma_normal_lista(x)
+- soma_de_kahan_lista(x)
+
+Onde a segunda função é a que de fato faz e retorna a soma de Kahan e a primeira função serve apenas de comparação, pois é um somatório normal dos elementos da lista.
+
+Segue um exemplo de como implementar:
 
 ```python
 
