@@ -175,3 +175,65 @@ def R2(pontos, polinomio):
     Coeficiente de determinacao R2.
     """
     return 1 - SSR(pontos, polinomio) / SST(pontos)
+
+
+def encontrar_grau_polinomial_bic(
+    pontos,
+    d_min=0,
+    d_max=10,
+    plotar=False
+):
+    """
+    Seleciona o grau do polinomio pelo criterio BIC.
+    Retorna:
+        d_best        grau escolhido
+        coef_best     coeficientes do polinomio de grau d_best
+        graus         lista dos graus testados
+        bic_vals      lista dos valores de BIC correspondentes
+    """
+    x, y = _validar_pontos_2xn(pontos)
+    x = np.asarray(x, dtype=float).ravel()
+    y = np.asarray(y, dtype=float).ravel()
+
+    n = x.size
+
+    if n == 0:
+        raise ValueError("pontos nao pode ser vazio")
+    if d_min < 0:
+        raise ValueError("d_min deve ser inteiro nao negativo")
+    if d_max < d_min:
+        raise ValueError("d_max deve ser maior ou igual a d_min")
+
+    bic_vals = []
+    coefs = []
+    graus = []
+
+    for d in range(d_min, d_max + 1):
+        X = np.vander(x, N=d + 1, increasing=False)
+        coef = np.linalg.lstsq(X, y, rcond=None)[0]
+
+        y_aprox = np.polyval(coef, x)
+        ssr = np.sum((y - y_aprox) ** 2)
+
+        if ssr <= 0:
+            bic = np.inf
+        else:
+            bic = n * np.log(ssr / n) + (d + 1) * np.log(n)
+
+        bic_vals.append(bic)
+        coefs.append(coef)
+        graus.append(d)
+
+    idx_best = int(np.argmin(bic_vals))
+    d_best = graus[idx_best]
+    coef_best = coefs[idx_best]
+
+    if plotar:
+        plt.plot(graus, bic_vals, marker="o")
+        plt.xlabel("grau")
+        plt.ylabel("BIC")
+        plt.title("Selecao de grau por BIC")
+        plt.grid(True)
+        plt.show()
+
+    return d_best, coef_best, graus, bic_vals
