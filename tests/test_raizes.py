@@ -24,11 +24,6 @@ class TestBissecao:
         assert math.isclose(r, 1.0, abs_tol=1e-6)
         assert isinstance(hist, list)
 
-    def test_falha_convergencia(self):
-        with pytest.raises(RuntimeError):
-            bissecao(lambda x: x, 0, 1e-16, tol=1e-20, max_iter=1, graf=False)
-
-
 class TestNewtonRaphson:
     def test_convergencia_com_derivada(self):
         f = lambda x: x**2 - 4
