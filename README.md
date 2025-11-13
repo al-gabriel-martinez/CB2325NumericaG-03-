@@ -94,7 +94,7 @@ Onde 4 é o número de casas decimais de aproximação desejada.
 
 Erro absoluto é definido como: 
 
-$ |Valor Real - Valor de Aproximação|\|Valor Real|$ 
+$$ \frac{|\text{Valor Real} - \text{Valor de Aproximação}|}{|\text{Valor Real}|} $$
 
 Para a função retornar qual o erro relativo de uma dada aproximação, o usuário deve:
 
@@ -212,6 +212,12 @@ print(H(0.5))
 ### Integração
 
 ### Raízes
+
+#### Método de Bisseção
+
+#### Método de Newton-Raphson
+
+#### Método de Secante
 
 ### Aproximação
 
