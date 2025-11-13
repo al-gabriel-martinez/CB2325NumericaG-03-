@@ -1,6 +1,5 @@
-import sys, os, pytest
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from CB2325NumericaG3.erros import erro_absoluto, erro_relativo, epsilon_da_maquina
+import pytest
+from Erro_relativo_e_absoluto_numero import erro_absoluto, erro_relativo, epsilon_da_maquina
 
 # Testes de erro absoluto
 
