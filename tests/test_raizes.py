@@ -1,8 +1,137 @@
-import math
+# tests/test_raizes.py
+import sys
+import os
+import numpy as np
+import matplotlib
 import pytest
+import math
+matplotlib.use("Agg") 
+import matplotlib.pyplot as plt
+from matplotlib.collections import PathCollection
+import CB2325NumericaG3.visualizacao_raizes as vg
+from CB2325NumericaG3.raizes import bissecao, newton_raphson, secante, raiz
 
-from raizes import bissecao, newton_raphson, secante, raiz
 
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
+def test_gerar_pontos(monkeypatch):
+    """Testa se gerar_pontos gera o número correto de pontos e se estão igualmente espaçados."""
+    monkeypatch.setattr(plt, "show", lambda: None)
+
+    visualizar = vg.VisualizadorRaizes(lambda x: x)
+    numero_pontos = 100
+    inicio = -100
+    fim = 100
+    lista_pontos = visualizar._gerar_pontos(a=inicio,b=fim,n=numero_pontos)
+    assert len(lista_pontos)==numero_pontos
+    delta1=lista_pontos[2]-lista_pontos[1]
+    delta2=lista_pontos[-1]-lista_pontos[-2]
+    assert abs(delta1-delta2) <=1e-6 
+    assert abs(lista_pontos[-1]-fim)<=1e-6
+
+def test_visualizar(monkeypatch):
+    """Testa se vizualizar plota o gráfico com os elementos desejados."""
+    monkeypatch.setattr(plt, "show", lambda: None)
+    
+    f = lambda x: x**2 - 4
+    historico = [0, 10, 5, 6, -1]
+    viz = vg.VisualizadorRaizes(f)
+    
+    # Visualização padrão
+    viz.visualizar(historico)
+    fig = plt.gcf()
+    axes = fig.get_axes()
+    
+    ax1 = axes[0]
+    xmin, xmax = ax1.get_xlim()
+    assert len(ax1.lines) > 0
+    
+    scatters = [c for c in ax1.collections if isinstance(c, PathCollection)]
+    assert len(scatters) == len(historico)
+    
+    assert xmin <= min(historico) - 1 + 1e-8
+    assert xmax >= max(historico) + 1 - 1e-8
+    
+    # Visualização com limites e título personalizados
+    a, b = -11, -11
+    viz.visualizar(historico, a, b, titulo="testando")
+    ax1 = plt.gcf().axes[0]
+    xmin, xmax = ax1.get_xlim()
+    assert xmin <= a - 1 + 1e-8
+    assert xmax >= b + 1 - 1e-8
+    
+    axes = plt.gcf().get_axes()
+    assert len(axes) == 2
+    
+    titulo = ax1.get_title()
+    assert f"Raiz: {historico[-1]:.6f}" in titulo
+    assert "testando" in titulo
+    
+    ax2 = axes[1]
+    assert ax2.get_yscale() == 'log'
+
+def test_visualizar_metodo(monkeypatch):
+    """Testa se visualizar_metodo passa os parâmetros corretamente."""
+    chamado = {}
+
+    def fake_visualizar(self, historico, **kwargs):
+        chamado["ok"] = (historico, kwargs)
+
+    monkeypatch.setattr(vg.VisualizadorRaizes, "visualizar", fake_visualizar)
+
+    f = lambda x: x**2 - 4
+    historico = [1, 2, 3]
+
+    vg.visualizar_metodo(f, historico, titulo="teste")
+
+    assert "ok" in chamado
+    assert chamado["ok"][0] == historico
+    assert chamado["ok"][1]["titulo"] == "teste"
+
+@pytest.fixture
+def setup_viz(monkeypatch):
+    """Configura o ambiente de teste e retorna dados para o teste."""
+    monkeypatch.setattr(plt,"show",lambda:None)
+    f = lambda x: x**2-4
+    historico = [-2,-1,0,1,2]
+    viz = vg.VisualizadorRaizes(f)
+
+    fig=plt.gcf()
+    ax1,ax2 = fig.axes
+    return f, historico,ax1,ax2
+    
+
+def test_cor_pontos(setup_viz):
+    """Verifica se a cor dos pontos em ax1 está correta."""
+    _,_,ax1,_ =setup_viz
+
+    scatters = [c for c in ax1.collections if isinstance(c, PathCollection)]
+    for i,scat in enumerate(scatters):
+        cor_ponto = scat.get_facecolor()[0]
+        r, g, b, _ = cor_ponto
+
+        if i == len(scatters)-1:
+            assert r > 0.8 and g < 0.2 and b < 0.2
+        else:
+            assert r > 0.8 and g > 0.3 and b < 0.3
+
+def test_linhas_tracejadas_vermelhas(setup_viz):
+    """Verifica se há um número coreeto de retas vermelhas"""
+
+    _, historico, ax1, _ = setup_viz
+
+    linhas_vermelhas = [
+        line for line in ax1.get_lines()
+        if line.get_linestyle() == '--' and (line.get_color() in ['r', '#ff0000'])
+    ]
+    assert len(linhas_vermelhas) >= len(historico) - 1
+
+def test_textos_pontos(setup_viz):
+    """Verifica se o texto dos pontos está correto"""
+    _, historico, ax1, _ = setup_viz
+    textos = [t.get_text() for t in ax1.texts]
+    esperados = [f"P{i+1}" for i in range(len(historico))]
+    assert textos == esperados
 
 class TestBissecao:
     def test_mudanca_de_sinal(self):
