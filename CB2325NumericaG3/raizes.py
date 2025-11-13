@@ -93,7 +93,7 @@ def bissecao(f, a, b, tol=1e-6, max_iter=100, graf=True, retornar_historico=Fals
             return (c, historico) if retornar_historico else c
 
         if ultimo_c is not None:
-            if abs(c-ultimo_c) < 1e-15
+            if abs(c-ultimo_c) < 1e-15:
                 raise RuntimeError(
                     f"Método da bisseção estagnou na iteração {i}"
                     f"Último c: {c:.12e}, f(c)={fc:.6e}, historico_size={len(historico)}"
