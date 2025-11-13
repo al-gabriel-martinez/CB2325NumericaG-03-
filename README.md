@@ -72,7 +72,7 @@ Exemplo de uso:
 valor_real1 = 3.141592
 valor_aprox1 = 3.14
 
-ea = erro_absoluto(valor_real1,valor_aprox1)
+ea = erro_absoluto(valor_real1, valor_aprox1)
 print(ea)
 
 ```
@@ -84,7 +84,7 @@ E para o caso onde é especificado a quantidade de casas decimais desejadas:
 valor_real1 = 3.141592
 valor_aprox1 = 3.14
 
-ea = erro_absoluto(valor_real1,valor_aprox1,4)
+ea = erro_absoluto(valor_real1, valor_aprox1, 4)
 print(ea)
 
 ```
@@ -111,7 +111,7 @@ Exemplo de uso:
 valor_real1 = 3.141592
 valor_aprox1 = 3.14
 
-er = erro_relativo(valor_real1,valor_aprox1)
+er = erro_relativo(valor_real1, valor_aprox1)
 print(er)
 
 ```
@@ -123,8 +123,8 @@ E para o caso onde é especificado a quantidade de casas decimais desejadas:
 valor_real1 = 3.141592
 valor_aprox1 = 3.14
 
-er = erro_relativo(valor_real1,valor_aprox1,4)
-print( er)
+er = erro_relativo(valor_real1, valor_aprox1,4)
+print(er)
 
 ```
 Onde 4 é o número de casas decimais de aproximação desejada.
@@ -139,7 +139,75 @@ e = epsilon_da_maquina()
 print(e)
 
 ```
-### Interpolação 
+### Interpolação
+
+A interpolação é utilizada para estimar valores desconhecidos de uma função a partir de pontos conhecidos. A biblioteca implementa diferentes métodos de interpolação, que permitem ajustar curvas contínuas aos dados de entrada e avaliar novos valores intermediários.
+
+---
+
+#### Interpolação Linear por Partes
+
+Na interpolação linear por partes, cada par de pontos consecutivos é conectado por uma reta. Esse método fornece uma aproximação simples e contínua da função original, sendo muito eficiente quando os dados apresentam variação quase linear.
+
+Exemplo de uso:
+
+```python
+X = [0, 1, 2, 3]
+Y = [0, 2, 4, 6]
+
+f = linear_interp(X, Y, plot=True, title="Interpolação Linear por Partes")
+
+print(f(1.5))
+```
+
+---
+
+#### Interpolação Polinomial
+
+A interpolação polinomial busca um polinômio que passe exatamente pelos pontos fornecidos. O grau do polinômio depende da quantidade de pontos usados. A biblioteca permite construir esse polinômio por diferentes métodos equivalentes: Lagrange, Newton ou Vandermonde.
+
+Exemplo com o método de Lagrange:
+
+```python
+X = [1, 2, 3]
+Y = [2, 3, 5]
+
+p = poly_interp(X, Y, method="lagrange", plot=True, title="Interpolação Polinomial - Lagrange")
+print(p(2.5))
+```
+
+Exemplo com o método de Newton:
+
+```python
+p = poly_interp(X, Y, method="newton", plot=True, title="Interpolação Polinomial - Newton")
+print(p(2.5))
+```
+
+Exemplo com o método de Vandermonde:
+
+```python
+p = poly_interp(X, Y, method="vandermonde", plot=True, title="Interpolação Polinomial - Vandermonde")
+print(p(2.5))
+```
+
+---
+
+#### Interpolação de Hermite
+
+A interpolação de Hermite leva em conta não apenas os valores da função, mas também as derivadas conhecidas nos pontos dados, proporcionando uma curva mais suave que reflete o comportamento local da função.
+
+Exemplo de uso:
+
+```python
+x = [0, 1]
+deriv = [
+    [1, 1],  # f(0) = 1, f'(0) = 1
+    [2, 3]   # f(1) = 2, f'(1) = 3
+]
+
+H = hermite_interp(x, deriv, plot=True, title="Interpolação de Hermite")
+print(H(0.5))
+```
 
 ### Integração
 
@@ -156,7 +224,7 @@ Caso o usuário deseje utilizar essa função basta fornecer uma lista contendo 
 lista = [10000, 5.29476, 2.25958]
 
 soma = soma_de_kahan_lista(lista)
-print("Soma Kahan",soma)
+print("Soma Kahan", soma)
 
 ```
 
