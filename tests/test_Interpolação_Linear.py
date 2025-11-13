@@ -2,7 +2,7 @@ import pytest
 import numpy as np
 import matplotlib
 matplotlib.use('Agg')  # evita abrir janelas de gráfico nos testes
-from interpolacao.py import linear_interp  # altere o nome conforme seu arquivo
+from interpolacao import linear_interp  # altere o nome conforme seu arquivo
 def test_interpolacao_simples():
     # Pontos de uma função linear simples: y = 2x
     X = [0, 1, 2]
@@ -53,4 +53,5 @@ def test_ordem_automatica_dos_pontos():
     Y = [4, 0, 2]
     f = linear_interp(X, Y, plot=False)
     assert f(1.5) == pytest.approx(3)
+
 
