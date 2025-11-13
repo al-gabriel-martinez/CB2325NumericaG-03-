@@ -211,9 +211,131 @@ print(H(0.5))
 
 ### Integração
 
+A função `integral` aproxima o valor da integral definida de uma função real em um intervalo \[a, b\]:
+
+Ela permite escolher entre três métodos numéricos:
+
+- Trapézio  
+- Ponto Médio  
+- Simpson  
+
+Para usar a função, o usuário deve:
+
+- Fornecer a função `f(x)` a ser integrada ;
+- Fornecer o limite inferior `a`;
+- Fornecer o limite superior `b`;
+- Fornecer o número de subintervalos `n` (inteiro positivo).
+
+Opcionalmente, o usuário pode:
+
+- Escolher o método numérico (`metodo="trapezio"`, `"ponto_medio"` ou `"simpson"`);
+- Decidir se quer ou não o gráfico (`plotar=True/False`);
+- Ajustar parâmetros visuais do gráfico: `suavidade`, `cor_grafico`, `opacidade_grafico`,
+  `cor_area`, `opacidade_area` e `grade`.
+---
+
 #### Trapézio
-#### Ponto Médio 
-#### Simpson 
+
+No **método do trapézio**, o intervalo $[a, b]$ é dividido em $n$ subintervalos de largura
+
+$$
+\Delta x = \frac{b - a}{n}.
+$$
+
+Em cada subintervalo $[x_i, x_{i+1}]$, a função é aproximada por um **segmento de reta**
+ligando os pontos $(x_i, f(x_i))$ e $(x_{i+1}, f(x_{i+1}))$.
+
+A área sob a curva nesse pedaço é aproximada pela área de um **trapézio**:
+
+$$
+\text{área}_i \approx \frac{f(x_i) + f(x_{i+1})}{2}\. \Delta x.
+$$
+
+A integral aproximada é a soma de todas essas áreas.  
+Quando `plotar=True`, o gráfico mostra vários trapézios inclinados preenchidos sob a curva.
+
+Exemplo com o método do Trapézio
+
+```python
+
+g = lambda x: math.sin(x)
+
+area = integral(g, 0, math.pi, 100, metodo = "trapezio", cor_grafico="black")
+ou
+area = integral(g, 0, math.pi, 100, cor_grafico="black")
+
+print("função g com método do trapézio:", area)
+```
+---
+
+#### Ponto Médio
+
+No **método do ponto médio**, o intervalo $[a, b]$ também é dividido em  $n$ subintervalos de largura $\Delta x = \dfrac{b - a}{n}$.
+
+Em cada subintervalo $[x_i, x_{i+1}]$, calcula-se o **ponto médio**:
+
+$$
+x_m = \frac{x_i + x_{i+1}}{2}.
+$$
+
+A função é aproximada por um **retângulo** de base $\Delta x$ e altura $f(x_m)$.
+
+A área em cada subintervalo é:
+
+$$
+\text{área}_i \approx f(x_m)\.\Delta x.
+$$
+
+
+A integral aproximada é a soma das áreas desses retângulos.  
+No gráfico, aparecem retângulos centrados no ponto médio de cada subintervalo.
+
+Exemplo com o método do Ponto Médio
+
+```python
+g = lambda x: math.sin(x)
+
+area = integral(g, 0, math.pi, 100, metodo="ponto_medio")
+print("função g com método do ponto médio:", area)
+```
+
+
+---
+
+#### Simpson
+
+No **método de Simpson**, cada subintervalo $[x_i, x_{i+1}]$ é tratado junto com seu ponto médio:
+
+$$
+x_m = \frac{x_i + x_{i+1}}{2}.
+$$
+
+Em vez de usar uma reta ou um retângulo, o método ajusta uma **parábola** que passa pelos três pontos:
+
+$$
+(x_i, f(x_i)),\ (x_m, f(x_m)),\ (x_{i+1}, f(x_{i+1})).
+$$
+
+A área em cada subintervalo é aproximada por:
+
+$$
+\text{área}_i \approx \frac{\Delta x}{6}\cdot\big(f(x_i) + 4f(x_m) + f(x_{i+1})\big).
+$$
+
+Somando todas essas áreas, obtém-se a aproximação da integral.  
+Quando `plotar=True`, o código desenha a parábola ajustada em cada subintervalo e preenche a área sob essa curva.
+
+---
+
+Exemplo com o método do Simpson
+
+```python
+g = lambda x: math.sin(x)
+
+area = integral(g, 0, math.pi, 100, metodo="simpson", opacidade_area=1)
+print("função g com método de Simpson:", area)
+```
+
 
 ### Raízes
 
