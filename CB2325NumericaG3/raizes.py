@@ -111,6 +111,57 @@ def bissecao(f, a, b, tol=1e-6, max_iter=100, graf=True, retornar_historico=Fals
     
     raise RuntimeError(f"Método da bisseção não convergiu após {max_iter} iterações.")
 
+def bissecao_multiraizes(f, a, b, tol=1e-6, max_iter=100, max_raizes=10, subdivisoes=1000, graf=False):
+    """
+    Encontra até 'max_raizes' raízes de f(x) no intervalo [a, b] usando o método da bisseção.
+    Se o número de raízes ultrapassar 'max_raizes', lança um aviso e interrompe.
+
+    Parameters
+    ----------
+    f : callable
+        Função cujo zero será procurado.
+    a, b : float
+        Limites do intervalo.
+    tol : float
+        Tolerância da bisseção.
+    max_iter : int
+        Iterações máximas da bisseção.
+    max_raizes : int
+        Número máximo de raízes a encontrar antes de interromper.
+    subdivisoes : int
+        Número de divisões do intervalo para detectar mudanças de sinal.
+    graf : bool
+        Se True, plota cada raiz encontrada.
+
+    Returns
+    -------
+    list of float
+        Lista com as raízes encontradas.
+    """
+
+    raizes = []
+    x_vals = [a + i*(b-a)/subdivisoes for i in range(subdivisoes+1)]
+
+    for i in range(subdivisoes):
+        x0, x1 = x_vals[i], x_vals[i+1]
+        f0, f1 = f(x0), f(x1)
+
+        # Detecta mudança de sinal
+        if f0 * f1 < 0:
+            try:
+                raiz = bissecao(f, x0, x1, tol=tol, max_iter=max_iter, graf=graf, retornar_historico=False)
+                raizes.append(raiz)
+            except Exception:
+                continue  # Se der erro numérico, ignora o subintervalo
+
+            # Se atingir o limite de raízes, interrompe
+            if len(raizes) >= max_raizes:
+                print( f"Atenção: limite de {max_raizes} raízes atingido. Interrompendo busca em [{a}, {b}].\n"
+                       f"{len(raizes)} Raízes encontradas antes do limite:\n"
+                       f"{raizes}")
+                break
+
+    return raizes
 
 def newton_raphson(f, x0, df=None, tol=1e-6, max_iter=100, h=1e-8, graf=True, retornar_historico=False):
     """
@@ -288,7 +339,7 @@ def secante(f, a, b, tol=1e-6, max_iter=100, graf=True, retornar_historico=False
     raise RuntimeError(f"Método da secante não convergiu após {max_iter} iterações.")
 
 
-def raiz(f, a=None, b=None, x0=None, df=None, tol=1e-6, max_iter=100, method="bissecao", graf=True, retornar_historico=False):
+def raiz(f, a=None, b=None, x0=None, df=None, tol=1e-6, max_iter=100, max_raizes=10, subdivisoes=1000, method="bissecao", graf=True, retornar_historico=False):
     """
     Interface unificada para encontrar raízes de funções.
     
@@ -300,9 +351,9 @@ def raiz(f, a=None, b=None, x0=None, df=None, tol=1e-6, max_iter=100, method="bi
     f : callable
         Função da qual se deseja encontrar a raiz.
     a : float, optional
-        Limite inferior do intervalo (necessário para bisseção).
+        Limite inferior do intervalo (necessário para bisseção e secante).
     b : float, optional
-        Limite superior do intervalo (necessário para bisseção).
+        Limite superior do intervalo (necessário para bisseção e secante).
     x0 : float, optional
         Aproximação inicial (necessário para Newton-Raphson).
     df : callable, optional
@@ -311,8 +362,12 @@ def raiz(f, a=None, b=None, x0=None, df=None, tol=1e-6, max_iter=100, method="bi
         Tolerância para o critério de parada (padrão: 1e-6).
     max_iter : int, optional
         Número máximo de iterações (padrão: 100).
+    max_raizes : int
+        Número máximo de raízes a encontrar antes de interromper. (necessário para mult-bisseção)
+    subdivisoes : int
+        Número de divisões do intervalo para detectar mudanças de sinal. (necessário para mult-bisseção)
     method : str, optional
-        Método a ser usado: "bissecao" ou "newton" (padrão: "bissecao").
+        Método a ser usado: "secante", "bissecao" ou "newton" (padrão: "bissecao").
     graf : bool, optional
         Se mostra o gráfico da função ou não.
     retornar_historico : bool, optional
@@ -362,7 +417,12 @@ def raiz(f, a=None, b=None, x0=None, df=None, tol=1e-6, max_iter=100, method="bi
                 raise ValueError("O método de Newton-Raphson requer o parâmetro 'x0' "
                                "ou os parâmetros 'a' e 'b' para estimativa inicial.")
         return newton_raphson(f, x0, df, tol, max_iter, graf=graf, retornar_historico=retornar_historico)
+
+    elif method in ["bisseção-multiraizes", "multbissecao", "mult-bissecao", "multbissec", "multbis", "multraizes", "mb"]
+        if a is None or b is None:
+            raise ValueError("O método da bisseção de múltiplas raízes requer os parâmetros 'a' e 'b'.")
+        return bissecao_multiraizes(f, a, b, tol, max_iter, max_raizes=max_raizes, subdivisoes=subdivisoes, graf=graf)
     
     else:
         raise ValueError(f"Método '{method}' não reconhecido. "
-                        f"Use 'bissecao', 'secante' ou'newton'.")
+                        f"Use 'bissecao', 'multbissecao' 'secante' ou 'newton'.")
