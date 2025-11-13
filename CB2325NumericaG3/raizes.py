@@ -77,6 +77,7 @@ def bissecao(f, a, b, tol=1e-6, max_iter=100, graf=True, retornar_historico=Fals
         return (b, [b]) if retornar_historico else b
     
     historico = []
+    ultimo_c = None
     
     for i in range(max_iter):
         # Calcula o ponto médio
@@ -90,6 +91,15 @@ def bissecao(f, a, b, tol=1e-6, max_iter=100, graf=True, retornar_historico=Fals
                 viz = VisualizadorRaizes(f)
                 viz.visualizar(historico, a=a, b=b, titulo="Método da Bisseção")
             return (c, historico) if retornar_historico else c
+
+        if ultimo_c is not None:
+            if abs(c-ultimo_c) < 1e-15
+                raise RuntimeError(
+                    f"Método da bisseção estagnou na iteração {i}"
+                    f"Último c: {c:.12e}, f(c)={fc:.6e}, historico_size={len(historico)}"
+            )
+
+        ultimo_c = c 
         
         # Atualiza o intervalo
         if fa * fc < 0:
@@ -181,7 +191,7 @@ def newton_raphson(f, x0, df=None, tol=1e-6, max_iter=100, h=1e-8, graf=True, re
                              f"x={x:.6f}, f'(x)={dfx:.2e}")
         
         # Verifica convergência
-        if abs(fx) < tol:
+        if abs(fx) < tol * 1e-2:
             if graf:
                 viz = VisualizadorRaizes(f)
                 viz.visualizar(historico, titulo="Método de Newton-Raphson")
