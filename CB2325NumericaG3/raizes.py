@@ -2,12 +2,7 @@
 Módulo para cálculo de raízes de funções reais. Feito por: Anizio S. C. Júnior (aka AnZ)
 
 Este módulo implementa métodos numéricos para encontrar raízes (zeros) de funções reais.
-Implementações: Método da Bisseção e Método de Newton-Raphson.
-
-É interessante notar que para funções com infinitas raizes em um intervalo finito, como 
-a função f(x)=sen(1/x) no intervalo (0,1] é possível encontrar somente um zero dos infinitos 
-com o método de bisseção, mas com o método de Newton-Raphson a aproximação é extremamente instável 
-podendo divergir.
+Implementações: Método da Bisseção, Método de Bisseção para múltiplas raízes, Método de Secante e Método de Newton-Raphson.
 """
 
 from CB2325NumericaG3.visualizacao_raizes import VisualizadorRaizes
