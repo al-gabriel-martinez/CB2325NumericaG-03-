@@ -1,0 +1,61 @@
+name: Publish Python Package to PyPI on Release
+
+on:
+  release:
+    types: [created]  
+
+jobs:
+  pypi-publish:
+    name: Publish to PyPI
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/CB2325NumericaG3   
+    permissions:
+      id-token: write  
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flit toml
+
+      - name: Extract version from tag
+        run: |
+            TAG_VERSION=${GITHUB_REF#refs/tags/v}
+            echo "TAG_VERSION=$TAG_VERSION" >> $GITHUB_ENV
+            echo "Detected version: $TAG_VERSION"
+
+      - name: Update pyproject.toml version
+        run: |
+          python - <<EOF
+          import toml
+          import pathlib
+          import os
+
+          version = os.getenv("TAG_VERSION")
+          print("Updating pyproject.toml to version:", version)
+          pyproject = pathlib.Path("pyproject.toml")
+          data = toml.load(pyproject)
+          data["project"]["version"] = version
+          if "dynamic" in data["project"]:
+              data["project"].pop("dynamic")
+          pyproject.write_text(toml.dumps(data))
+          print("pyproject.toml updated.")
+          EOF
+
+      - name: Build package (wheel + sdist)
+        run: |
+          rm -rf dist build *.egg-info
+          flit build
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
