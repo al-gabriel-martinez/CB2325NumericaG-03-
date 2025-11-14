@@ -8,7 +8,7 @@ Biblioteca de Cálculo Numérico em Python para AV2 da Disciplina de Programaç�
 * Cristiane Magarinos Sampaio
 * Davi Bezerra Leal Guimarães
 * Felipe Lima De Sousa
-* Felipe Ribeiro Medonça
+* Felipe Ribeiro Mendonça
 * Gabriel Falcão Martinez
 * Guilherme Oséias Pereira Da Silva
 * Heitor Ramos Pereira
@@ -345,11 +345,142 @@ print("função g com método de Simpson:", area)
 
 ### Aproximação
 
+A aproximação tem como objetivo ajustar funções que não precisam passar exatamente pelos pontos, mas que representem bem o comportamento geral dos dados. A biblioteca implementa métodos para ajustar polinômios, funções exponenciais e também calcular métricas estatísticas de qualidade do ajuste.
+
 #### Polinomial
+
+A aproximação polinomial consiste em encontrar um polinômio que minimize o erro entre os valores observados e os valores previstos. Esta biblioteca oferece dois métodos principais:
+
+Mínimos Quadrados (MQ) — encontra de forma determinística o polinômio que minimiza a soma dos quadrados dos resíduos.
+
+Busca Aleatória — testa coeficientes aleatórios para encontrar um polinômio razoável, útil para explorações iniciais ou validação.
+
+##### Mínimos 
+
+Este método usa álgebra linear para calcular diretamente os coeficientes do polinômio que melhor se ajusta aos dados.
+
+```python
+pontos = [
+    [0, 1, 2, 3, 4],   # x
+    [1, 2, 0, 6, 10]   # y
+]
+
+coef = aproximacao_polinomial_mq(pontos, grau=2, plotar=True)
+print("Coeficientes:", coef)
+```
+
+##### Busca Aleatória
+
+Neste método, coeficientes aleatórios são testados em um intervalo definido, e o polinômio com menor erro é retornado.
+Não garante o ótimo global, mas funciona como abordagem heurística.
+
+```python
+pontos = [
+    [0, 1, 2, 3], 
+    [1, 2, 0, 5]
+]
+
+melhor = aproximacao_polinomial_aleatoria(
+    pontos,
+    grau=2,
+    expoente=2,
+    intervalo=(-2, 2),
+    plotar=True
+)
+
+print("Melhores coeficientes encontrados:", melhor)
+```
 
 #### Exponencial 
 
+A aproximação exponencial busca ajustar uma função do tipo:
+
+$$
+y = c\;\exp(bx)
+$$
+
+Esse tipo de ajuste é útil quando os dados apresentam crescimento ou decaimento exponencial.
+A função automaticamente converte o problema para uma regressão linear no logaritmo de 
+$y$
+
+Se valores de $y \leq 0$ estiverem presentes, a função poderá:
+
+- lançar erro (comportamento padrão), ou
+- descartar pontos inválidos (```ignore_negativos=True```).
+
+```python
+pontos = [
+    [0, 1, 2, 3],   # x
+    [2, 4, 9, 20]   # y
+]
+
+c, b = aproximacao_exponencial(pontos, plotar=True)
+print("c =", c, "b =", b)
+```
+
 #### Cálculo de Resíduos
+A qualidade de um ajuste pode ser medida pela diferença entre os valores reais e os valores previstos.
+A biblioteca implementa funções clássicas da análise de regressão:
+
+##### SSR - Soma dos Quadrados dos Resíduos
+
+$$
+SSR = \sum (y_i - \hat{y}_i)^2
+$$
+
+Medida de erro total do ajuste.
+
+```python
+ssr = SSR(pontos, coef)
+print("SSR:", ssr)
+```
+
+##### SST - Soma Total dos Quadrados
+
+$$
+SST = \sum (y_i - \bar{y})^2
+$$
+
+Representa a variação total dos dados — usada como referência para normalizar o erro.
+
+```python
+sst = SST(pontos, coef)
+print("SST:", sst)
+```
+
+##### R² - Coeficiente de Determinação
+
+$$
+R^2 = 1 - \frac{SSR}{SST}
+$$
+
+Valores próximos de 1 indicam bom ajuste.
+
+```python
+r2 = R2(pontos, coef)
+print("R²:", r2)
+```
+
+#### Seleção Automática do Grau Polinomial (BIC)
+Método para escolher automaticamente o grau ótimo do polinômio usando o Critério de Informação Bayesiano (BIC).
+
+A função testa graus dentro de um intervalo e retorna:
+- grau selecionado
+- coeficientes
+- lista de graus testados
+- valores de BIC correspondentes
+
+```python
+d_best, coef_best, graus, bics = encontrar_grau_polinomial_bic(
+    pontos,
+    d_min=0,
+    d_max=6,
+    plotar=True
+)
+
+print("Melhor grau:", d_best)
+print("Coeficientes:", coef_best)
+```
 
 
 ### Soma de Kahan 
