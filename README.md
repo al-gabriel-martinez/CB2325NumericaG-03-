@@ -396,7 +396,7 @@ print("Melhores coeficientes encontrados:", melhor)
 A aproximação exponencial busca ajustar uma função do tipo:
 
 $$
-y = c\;\exp(bx)
+y = c \, e^{bx}
 $$
 
 Esse tipo de ajuste é útil quando os dados apresentam crescimento ou decaimento exponencial.
