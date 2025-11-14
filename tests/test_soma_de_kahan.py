@@ -1,5 +1,7 @@
-import pytest
+import sys, os, pytest
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from CB2325NumericaG3.soma_de_kahan import soma_normal_lista, soma_de_kahan_lista
+
 
 def test_soma_valores_discrepantes():
     X = [100000000] + [10**(-6) for i in range(10**6)]

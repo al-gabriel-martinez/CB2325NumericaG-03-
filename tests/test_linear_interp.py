@@ -1,8 +1,11 @@
-import pytest
-import numpy as np
-import matplotlib
+import sys, os, pytest
+import matplotlib 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from CB2325NumericaG3.interpolacao import linear_interp
 matplotlib.use('Agg')  # evita abrir janelas de gráfico nos testes
-from interpolacao import linear_interp  # altere o nome conforme seu arquivo
+
+
+ # altere o nome conforme seu arquivo
 def test_interpolacao_simples():
     # Pontos de uma função linear simples: y = 2x
     X = [0, 1, 2]

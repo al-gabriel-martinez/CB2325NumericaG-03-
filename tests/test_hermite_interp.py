@@ -1,6 +1,9 @@
+import sys, os, pytest
 import numpy as np
-import pytest
-from interpolacao import hermite_interp   # ajuste o nome do módulo
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from CB2325NumericaG3.interpolacao import hermite_interp
+
+
 # Testa se a Hermite interpola exatamente os pontos dados
 def test_interpola_os_pontos():
     xs = np.array([0, 1])

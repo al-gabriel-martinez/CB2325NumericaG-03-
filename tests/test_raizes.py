@@ -1,15 +1,11 @@
 # tests/test_raizes.py
-import sys
-import os
-import numpy as np
-import matplotlib
-import pytest
-import math
-matplotlib.use("Agg") 
+import sys, os, pytest, matplotlib, math
 import matplotlib.pyplot as plt
 from matplotlib.collections import PathCollection
-import CB2325NumericaG3.visualizacao_raizes as vg
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from CB2325NumericaG3.raizes import bissecao, newton_raphson, secante, raiz
+matplotlib.use("Agg") 
+import CB2325NumericaG3.visualizacao_raizes as vg
 
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))

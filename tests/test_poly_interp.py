@@ -1,7 +1,7 @@
-from interpolacao import poly_interp
-import pytest
-import numpy as np 
-
+import sys, os, pytest
+import numpy as np
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from CB2325NumericaG3.interpolacao import poly_interp
 # Testes:
 
 
