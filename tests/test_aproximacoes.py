@@ -1,15 +1,10 @@
-import pytest
+import sys, os, pytest, matplotlib
 import numpy as np
 from numpy.testing import assert_array_almost_equal, assert_almost_equal
-import matplotlib
 matplotlib.use('Agg')  # Backend não-interativo para testes
-import sys
-from pathlib import Path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-# Adiciona o diretório pai ao path para importar o módulo aproximacao
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
-from aproximacao import (
+from CB2325NumericaG3.aproximacao import (
     aproximacao_polinomial_mq,
     aproximacao_polinomial_aleatoria,
     aproximacao_exponencial,
@@ -370,6 +365,3 @@ class TestCasosEspeciais:
         coef = aproximacao_polinomial_mq(pontos, grau=1)
         assert coef is not None
 
-
-if __name__ == "__main__":
-    pytest.main([__file__, "-v"])
