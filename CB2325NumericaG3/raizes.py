@@ -413,7 +413,7 @@ def raiz(f, a=None, b=None, x0=None, df=None, tol=1e-6, max_iter=100, max_raizes
                                "ou os parâmetros 'a' e 'b' para estimativa inicial.")
         return newton_raphson(f, x0, df, tol, max_iter, graf=graf, retornar_historico=retornar_historico)
 
-    elif method in ["bisseção-multiraizes", "multbissecao", "mult-bissecao", "multbissec", "multbis", "multraizes", "mb"]
+    elif method in ["bisseção-multiraizes", "multbissecao", "mult-bissecao", "multbissec", "multbis", "multraizes", "mb"]:
         if a is None or b is None:
             raise ValueError("O método da bisseção de múltiplas raízes requer os parâmetros 'a' e 'b'.")
         return bissecao_multiraizes(f, a, b, tol, max_iter, max_raizes=max_raizes, subdivisoes=subdivisoes, graf=graf)

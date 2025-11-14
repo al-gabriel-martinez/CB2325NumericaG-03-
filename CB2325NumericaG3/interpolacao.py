@@ -372,8 +372,15 @@ def hermite_interp(x: list, deriv: list, plot=True, title=""):
     - Demais entradas da tabela são calculadas usando 
       diferenças divididas convencionais.
     """
-
+    deriv = [
+    d if isinstance(d, (list, tuple, np.ndarray)) else [d]
+    for d in deriv
+    ]
     n = sum(len(d) for d in deriv)
+
+    if len(x) != len(deriv):
+       raise ValueError('O tamanho de x e das derivadas deve ser o mesmo!')
+       
 
     # Vetor de pontos repetidos
     Z = np.zeros(n)
@@ -446,3 +453,5 @@ def hermite_interp(x: list, deriv: list, plot=True, title=""):
         plt.show()
     
     return H
+
+
