@@ -42,9 +42,26 @@ Biblioteca de Cálculo Numérico em Python para AV2 da Disciplina de Programaç�
     * Exponencial
 * Soma de Kahan
 
-## Instalação da Biblioteca 
+## Utilização da Biblioteca 
 
+### Opção 1 - Importação local
+Caso deseje baixar o repositório e rodar um arquivo local, é necessário adicionar o `sys.path` ao seu código para permitir a importação da pasta principal CB2325NumericaG3.
 
+```python
+import sys, os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from CB2325NumericaG3.integracao import integral
+
+f = lambda x: x**2
+area = integral(f, 0, 1, 100, plotar = False)
+print("Valor da integral de f(x):", area)
+```
+
+### Opção 2 - Instalação da biblioteca
+Necessário **Python 3.9+**
+```
+pip install CB2325NumericaG3
+```
 
 ## Visão Geral Das Funções Com Exemplos 
 
