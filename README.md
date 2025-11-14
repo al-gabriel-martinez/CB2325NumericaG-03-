@@ -521,10 +521,10 @@ Todos os métodos possuem o parâmetro `graf=True`, que exibe **um gráfico inte
 
 | Método               | Precisa de intervalo? | Precisa de derivada? | Velocidade | Confiabilidade |
 | -------------------- | --------------------- | -------------------- | ---------- | -------------- |
-| Bisseção             | ✅ Sim                | ❌ Não               | 🐢 Lento   | 💪 Alta        |
-| Newton-Raphson       | ❌ (usa x₀)           | ✅ Sim / aproxima    | ⚡ Rápido  | ⚠️ Média       |
-| Secante              | ✅ Sim (a, b)         | ❌ Não               | ⚡ Rápido  | ⚠️ Média       |
-| Bisseção Multiraízes | ✅ Sim                | ❌ Não               | 🐢 Lento   | 💪 Alta        |
+| Bisseção             | ✅ Sim                | ❌ Não               | Lento   |  Alta        |
+| Newton-Raphson       | ❌ (usa x₀)           | ✅ Sim / aproxima    | Rápido  |  Média       |
+| Secante              | ✅ Sim (a, b)         | ❌ Não               | Rápido  |  Média       |
+| Bisseção Multiraízes | ✅ Sim                | ❌ Não               | Lento   |  Alta        |
 ### Aproximação
 
 A aproximação tem como objetivo ajustar funções que não precisam passar exatamente pelos pontos, mas que representem bem o comportamento geral dos dados. A biblioteca implementa métodos para ajustar polinômios, funções exponenciais e também calcular métricas estatísticas de qualidade do ajuste.
