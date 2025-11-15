@@ -41,7 +41,7 @@ def test_tamanho_inconsistente():
 
     deriv_list = [[y, dy] for y, dy in zip(ys, dys)]
     # A função pode lançar ValueError ou outro erro de tamanho
-    with pytest.raises(Exception):
+    with pytest.raises(ValueError):
         hermite_interp(xs, deriv_list, plot=False)
 
 # 4️⃣ Testa extrapolação (x fora do intervalo dos nós)
@@ -69,3 +69,4 @@ def test_derivadas_respeitadas():
     h = 1e-6
     derivada_num = (H(h) - H(0)) / h
     assert derivada_num == pytest.approx(2, rel=1e-3)
+
